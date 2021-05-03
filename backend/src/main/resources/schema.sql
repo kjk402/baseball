@@ -33,6 +33,7 @@ DROP TABLE IF EXISTS `baseball`.`player` ;
 CREATE TABLE IF NOT EXISTS `baseball`.`player`(
     `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
     `player_name` VARCHAR (50),
+    `average` FLOAT,
     `team` VARCHAR (50),
     CONSTRAINT player_team_foreign_key FOREIGN KEY (`team`) REFERENCES `team` (team_name)
 );
