@@ -21,7 +21,21 @@ DROP TABLE IF EXISTS `baseball`.`team` ;
 
 CREATE TABLE IF NOT EXISTS `baseball`.`team` (
     `team_name` VARCHAR(50),
+    `selected` VARCHAR(50),
     PRIMARY KEY (`team_name`))
+    ENGINE = InnoDB
+    DEFAULT CHARACTER SET = utf8;
+
+
+DROP TABLE IF EXISTS `baseball`.`record` ;
+
+CREATE TABLE IF NOT EXISTS `baseball`.`record`(
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `player_name` VARCHAR (50),
+    `at_bat` INT,
+    `hits` INT,
+    `out` INT,
+    `average` FLOAT)
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
@@ -31,11 +45,16 @@ CREATE TABLE IF NOT EXISTS `baseball`.`team` (
 DROP TABLE IF EXISTS `baseball`.`player` ;
 
 CREATE TABLE IF NOT EXISTS `baseball`.`player`(
-    `id` BIGINT AUTO_INCREMENT PRIMARY KEY,
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
     `player_name` VARCHAR (50),
-    `average` FLOAT,
     `team` VARCHAR (50),
-    CONSTRAINT player_team_foreign_key FOREIGN KEY (`team`) REFERENCES `team` (team_name)
+    `record` INT,
+    CONSTRAINT player_team_foreign_key FOREIGN KEY (`team`) REFERENCES `team` (team_name),
+    CONSTRAINT dish_sale_sale_foreign_key FOREIGN KEY (`record`) REFERENCES `record` (id)
 );
+
+
+
+
 
 

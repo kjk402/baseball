@@ -48,4 +48,5 @@ public class WebConfig implements WebMvcConfigurer {
                 .paths(PathSelectors.ant("/**"))
                 .build();
     }
+
 }
