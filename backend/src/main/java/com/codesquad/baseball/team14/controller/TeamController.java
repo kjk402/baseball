@@ -1,8 +1,10 @@
 package com.codesquad.baseball.team14.controller;
 
 
+import com.codesquad.baseball.team14.domain.Record;
 import com.codesquad.baseball.team14.domain.Team;
 import com.codesquad.baseball.team14.dto.TeamDto;
+import com.codesquad.baseball.team14.service.RecordService;
 import com.codesquad.baseball.team14.service.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -18,9 +20,12 @@ import java.util.List;
 @RestController
 public class TeamController {
     private final TeamService teamService;
+    private final RecordService recordService;
 
-    public TeamController(TeamService teamService) {
+
+    public TeamController(TeamService teamService, RecordService recordService) {
         this.teamService = teamService;
+        this.recordService = recordService;
     }
 
     @GetMapping("/teams")
@@ -31,9 +36,9 @@ public class TeamController {
     }
 
     @GetMapping("/players/{teamName}")
-    @ApiOperation(value = "플레이어 이름", notes = "팀별로 플레이어의 이름을 반환합니다.")
-    public ResponseEntity<TeamDto> getDetail(@ApiParam("팀 식별자") @PathVariable("teamName") String detailHash) {
-        TeamDto teamDto = teamService.getPlayers(detailHash);
+    @ApiOperation(value = "플레이어 이름, 기록", notes = "팀별로 플레이어의 이름과 기록을 반환합니다.")
+    public ResponseEntity<TeamDto> getPlayersAndRecord(@ApiParam("팀 식별자") @PathVariable("teamName") String teamName) {
+        TeamDto teamDto = teamService.getPlayers(teamName);
         return ResponseEntity.ok().body(teamDto);
     }
 

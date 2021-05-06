@@ -1,24 +1,25 @@
 package com.codesquad.baseball.team14.dto;
 
 import com.codesquad.baseball.team14.domain.Player;
+import com.codesquad.baseball.team14.domain.Record;
 import com.codesquad.baseball.team14.domain.Team;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class TeamDto {
     private String teamName;
-    private List<String> players;
+    private LinkedHashMap<String,List<Record>> recordList;
 
     private TeamDto(Builder builder) {
         this.teamName = builder.teamName;
-        this.players = builder.players;
+        this.recordList = builder.recordList;
     }
 
-    public static TeamDto findPalyers(Team team, List<Player> players) {
+    public static TeamDto findPalyers(Team team, LinkedHashMap<String,List<Record>> recordList) {
         return new Builder()
                 .teamName(team.getTeamName())
-                .players(playersToName(players))
+                .recordList(recordList)
                 .build();
     }
 
@@ -28,30 +29,30 @@ public class TeamDto {
 
     public static class Builder {
         private String teamName;
-        private List<String> players;
+
+        private LinkedHashMap<String,List<Record>> recordList = new LinkedHashMap<>();
 
         public TeamDto build() {
             return new TeamDto(this);
         }
-
 
         public Builder teamName(String teamName) {
             this.teamName = teamName;
             return this;
         }
 
-        public Builder players(List<String> players) {
-            this.players = players;
+        public Builder recordList(LinkedHashMap<String,List<Record>> recordList){
+            this.recordList = recordList;
             return this;
         }
+
     }
 
     public String getTeamName() {
         return teamName;
     }
 
-    public List<String> getPlayers() {
-        return players;
+    public LinkedHashMap<String, List<Record>> getRecordList() {
+        return recordList;
     }
-
 }

@@ -1,24 +1,23 @@
 package com.codesquad.baseball.team14.service;
 
-import com.codesquad.baseball.team14.domain.Player;
-import com.codesquad.baseball.team14.domain.PlayerRepository;
-import com.codesquad.baseball.team14.domain.Team;
-import com.codesquad.baseball.team14.domain.TeamRepository;
+import com.codesquad.baseball.team14.domain.*;
 import com.codesquad.baseball.team14.dto.TeamDto;
 import org.springframework.stereotype.Service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
 public class TeamService {
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
+    private final RecordService recordService;
 
-    public TeamService(TeamRepository teamRepository, PlayerRepository playerRepository) {
+    public TeamService(TeamRepository teamRepository, PlayerRepository playerRepository, RecordService recordService) {
         this.teamRepository = teamRepository;
         this.playerRepository = playerRepository;
+        this.recordService = recordService;
     }
 
     public List<Team> getList() {
@@ -28,7 +27,8 @@ public class TeamService {
     public TeamDto getPlayers(String teamName) {
         Team team = teamRepository.findByTeamName(teamName);
         List<Player> players = playerRepository.findPlayersByTeam(teamName);
-        return TeamDto.findPalyers(team, players);
+        LinkedHashMap<String,List<Record>> recordList = recordService.getRecordByPlayer(players);
+        return TeamDto.findPalyers(team, recordList);
     }
 
 }
