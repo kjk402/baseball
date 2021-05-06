@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `baseball`.`record`(
     `at_bat` INT,
     `hits` INT,
     `outs` INT,
-    `average` FLOAT)
+    `average` DECIMAL (4,3))
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 

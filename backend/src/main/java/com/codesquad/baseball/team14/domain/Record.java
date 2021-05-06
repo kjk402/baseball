@@ -1,6 +1,10 @@
 package com.codesquad.baseball.team14.domain;
 
+import java.text.DecimalFormat;
+
 public class Record {
+    private static final DecimalFormat decimaForm = new DecimalFormat("0.000");
+
     private int atBat;
     private int hits;
     private int outs;
@@ -25,8 +29,8 @@ public class Record {
         return outs;
     }
 
-    public double getAverage() {
-        return average;
+    public String getAverage() {
+        return decimaForm.format(average);
     }
 
 }
