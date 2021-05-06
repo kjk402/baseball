@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface PlayerRepository extends CrudRepository<Player, String> {
-    @Query("SELECT player.* from baseball.player INNER JOIN baseball.team ON player.team = team.team_name WHERE team = :teamName;")
+    @Query("SELECT player.* from baseball.player INNER JOIN baseball.team ON player.team = team.team_name WHERE team = :teamName ORDER BY player.id;")
     List<Player> findPlayersByTeam(@Param("teamName") String teamName);
 }
 

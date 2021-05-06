@@ -1,6 +1,7 @@
 package com.codesquad.baseball.team14.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Embedded;
 
 public class Player {
 
@@ -8,14 +9,13 @@ public class Player {
     private Long id;
 
     private String playerName;
-    private Double average;
-
     private String team;
+    private Record record;
 
 
-    public Player(String playerName, String team) {
+    public Player(String playerName, Record record) {
         this.playerName = playerName;
-        this.team = team;
+        this.record = record;
     }
 
     public Long getId() {
@@ -28,6 +28,10 @@ public class Player {
 
     public String getTeam() {
         return team;
+    }
+
+    public Record getRecord() {
+        return record;
     }
 
 }

@@ -8,7 +8,7 @@ VALUES ('두산 베어스'),
        ('롯데 자이언츠');
 
 INSERT INTO record
-    (id, player_name, at_bat, hits, `out`, average)
+    (id, player_name, at_bat, hits, `outs`, average)
 VALUES
 --  두산 베어스
     (1, '허경민', 2, 1, 1, 0.500),
