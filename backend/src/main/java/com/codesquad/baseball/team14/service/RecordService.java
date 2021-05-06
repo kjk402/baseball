@@ -18,17 +18,22 @@ public class RecordService {
         this.recordRepository = recordRepository;
     }
 
-    public List<Record> getRecordByPlayer(String playerName) {
+    public Record getRecordByPlayer(String playerName) {
         return recordRepository.findRecordByPlayer(playerName);
     }
 
-    public LinkedHashMap<String,List<Record>> getRecordByPlayer(List<Player> players) {
-        LinkedHashMap<String,List<Record>> recordList =  new LinkedHashMap<>();
+    public LinkedHashMap<String,Record> getRecordByPlayer(List<Player> players) {
+        LinkedHashMap<String, Record> recordList =  new LinkedHashMap<>();
         for (Player player : players) {
             recordList.put(player.getPlayerName(), recordRepository.findRecordByPlayer(player.getPlayerName()));
-
         }
         return recordList;
+    }
+
+    public void updateRecord(String playerName, int hits, int outs) {
+        Record record = recordRepository.findRecordByPlayer(playerName);
+        record.update(hits, outs);
+        recordRepository.updateRecord(record.getAtBat(), record.getHits(), record.getOuts(), playerName);
     }
 
 }

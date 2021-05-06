@@ -9,14 +9,14 @@ import java.util.stream.Collectors;
 
 public class TeamDto {
     private String teamName;
-    private LinkedHashMap<String,List<Record>> recordList;
+    private LinkedHashMap<String,Record> recordList;
 
     private TeamDto(Builder builder) {
         this.teamName = builder.teamName;
         this.recordList = builder.recordList;
     }
 
-    public static TeamDto findPalyers(Team team, LinkedHashMap<String,List<Record>> recordList) {
+    public static TeamDto findPalyers(Team team, LinkedHashMap<String, Record> recordList) {
         return new Builder()
                 .teamName(team.getTeamName())
                 .recordList(recordList)
@@ -30,7 +30,7 @@ public class TeamDto {
     public static class Builder {
         private String teamName;
 
-        private LinkedHashMap<String,List<Record>> recordList = new LinkedHashMap<>();
+        private LinkedHashMap<String,Record> recordList = new LinkedHashMap<>();
 
         public TeamDto build() {
             return new TeamDto(this);
@@ -41,7 +41,7 @@ public class TeamDto {
             return this;
         }
 
-        public Builder recordList(LinkedHashMap<String,List<Record>> recordList){
+        public Builder recordList(LinkedHashMap<String,Record> recordList){
             this.recordList = recordList;
             return this;
         }
@@ -52,7 +52,7 @@ public class TeamDto {
         return teamName;
     }
 
-    public LinkedHashMap<String, List<Record>> getRecordList() {
+    public LinkedHashMap<String, Record> getRecordList() {
         return recordList;
     }
 }

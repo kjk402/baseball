@@ -15,18 +15,21 @@ CREATE SCHEMA IF NOT EXISTS `baseball` DEFAULT CHARACTER SET utf8 ;
 USE `baseball` ;
 
 -- -----------------------------------------------------
--- Table `sidedish`.`team`
+-- Table `baseball`.`team`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `baseball`.`team` ;
 
 CREATE TABLE IF NOT EXISTS `baseball`.`team` (
+    `id` INT,
     `team_name` VARCHAR(50),
     `selected` VARCHAR(50),
     PRIMARY KEY (`team_name`))
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
 
-
+-- -----------------------------------------------------
+-- Table `baseball`.`record`
+-- -----------------------------------------------------
 DROP TABLE IF EXISTS `baseball`.`record` ;
 
 CREATE TABLE IF NOT EXISTS `baseball`.`record`(
@@ -40,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `baseball`.`record`(
     DEFAULT CHARACTER SET = utf8;
 
 -- -----------------------------------------------------
--- Table `sidedish`.`dish_delivery`
+-- Table `baseball`.`player`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `baseball`.`player` ;
 
@@ -53,8 +56,40 @@ CREATE TABLE IF NOT EXISTS `baseball`.`player`(
     CONSTRAINT dish_sale_sale_foreign_key FOREIGN KEY (`record`) REFERENCES `record` (id)
 );
 
+-- -----------------------------------------------------
+-- Table `baseball`.`game`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `baseball`.`game` ;
 
+CREATE TABLE IF NOT EXISTS `baseball`.`game`
+(
+    id        BIGINT auto_increment primary key,
+    user_type varchar(20) not null,
+    home      varchar(20) references team (team_name),
+    away      varchar(20) references team (team_name)
+);
 
+-- -----------------------------------------------------
+-- Table `baseball`.`score_board`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `baseball`.`score_board` ;
 
+CREATE TABLE IF NOT EXISTS `baseball`.`score_board`
+(
+    id   BIGINT auto_increment primary key,
+    game BIGINT references game (id),
+    team varchar(20) references team (team_name)
+);
 
+-- -----------------------------------------------------
+-- Table `baseball`.`innings`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `baseball`.`innings` ;
 
+CREATE TABLE IF NOT EXISTS `baseball`.`innings`
+(
+    id              BIGINT auto_increment primary key,
+    score           int not null,
+    score_board     BIGINT references score_board (id),
+    score_board_key int
+);
