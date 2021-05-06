@@ -1,11 +1,11 @@
 INSERT INTO team
-    (team_name)
-VALUES ('두산 베어스'),
-       ('SSG 랜더스'),
-       ('기아 타이거즈'),
-       ('키움 히어로즈'),
-       ('한화 이글스'),
-       ('롯데 자이언츠');
+    (id, team_name)
+VALUES (1, '두산 베어스'),
+       (2, 'SSG 랜더스'),
+       (3, '기아 타이거즈'),
+       (4, '키움 히어로즈'),
+       (5, '한화 이글스'),
+       (6, '롯데 자이언츠');
 
 INSERT INTO record
     (id, player_name, at_bat, hits, `outs`, average)

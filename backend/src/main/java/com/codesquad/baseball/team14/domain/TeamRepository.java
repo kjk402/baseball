@@ -10,6 +10,6 @@ public interface TeamRepository extends CrudRepository<Team, String> {
     @Query("SELECT * from baseball.team WHERE team.team_name = :teamName")
     Team findByTeamName(@Param("teamName") String teamName);
 
-    @Query("SELECT team_name from baseball.team")
+    @Query("SELECT team_name from baseball.team ORDER BY team.id")
     List<Team> findAllTeams();
 }

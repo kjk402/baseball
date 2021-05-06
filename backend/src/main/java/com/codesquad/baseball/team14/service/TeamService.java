@@ -27,7 +27,7 @@ public class TeamService {
     public TeamDto getPlayers(String teamName) {
         Team team = teamRepository.findByTeamName(teamName);
         List<Player> players = playerRepository.findPlayersByTeam(teamName);
-        LinkedHashMap<String,List<Record>> recordList = recordService.getRecordByPlayer(players);
+        LinkedHashMap<String, Record> recordList = recordService.getRecordByPlayer(players);
         return TeamDto.findPalyers(team, recordList);
     }
 

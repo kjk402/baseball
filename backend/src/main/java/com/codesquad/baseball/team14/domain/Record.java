@@ -3,7 +3,7 @@ package com.codesquad.baseball.team14.domain;
 import java.text.DecimalFormat;
 
 public class Record {
-    private static final DecimalFormat decimaForm = new DecimalFormat("0.000");
+    private static final DecimalFormat decimalForm = new DecimalFormat("0.000");
 
     private int atBat;
     private int hits;
@@ -14,7 +14,13 @@ public class Record {
         this.atBat = atBat;
         this.hits = hits;
         this.outs = outs;
-        this.average = average;
+        this.average = (double)hits/atBat;
+    }
+
+    public void update(int hits, int outs) {
+        this.atBat = atBat +1;
+        this.hits += hits;
+        this.outs += outs;
     }
 
     public int getAtBat() {
@@ -30,7 +36,11 @@ public class Record {
     }
 
     public String getAverage() {
-        return decimaForm.format(average);
+        return decimalForm.format(average);
     }
+
+//    public String getAverage() {
+//        return decimalForm.format(average);
+//    }
 
 }
