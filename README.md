@@ -31,3 +31,6 @@ feature에서 작업 후 클래스/dev 쪽에 pr을 보내는 방식으로 진�
 
 ### baseball DB ERD
 ![table](https://user-images.githubusercontent.com/59398492/117410227-1be0ec00-af4d-11eb-86df-7c85e3c3d206.png)
+
+### 데일리 스크럼 및 회의록
+[wiki주소](https://github.com/kjk402/baseball/wiki/%ED%8C%80-%EB%8D%B0%EC%9D%BC%EB%A6%AC-%EC%8A%A4%ED%81%AC%EB%9F%BC-%EB%B0%8F-%ED%9A%8C%EC%9D%98-%EC%A0%95%EB%A6%AC)
