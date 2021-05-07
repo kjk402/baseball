@@ -39,8 +39,4 @@ public class Record {
         return decimalForm.format(average);
     }
 
-//    public String getAverage() {
-//        return decimalForm.format(average);
-//    }
-
 }
