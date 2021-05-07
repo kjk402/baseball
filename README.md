@@ -27,3 +27,7 @@ feature에서 작업 후 클래스/dev 쪽에 pr을 보내는 방식으로 진�
 ### API 링크 (팀불러오기, 선수불러오기, 기록업데이트부분 구현) / swagger 사용
 
 [API 배포 주소](http://52.78.158.138:8080/swagger-ui.html#)
+
+
+### baseball DB ERD
+![table](https://user-images.githubusercontent.com/59398492/117410227-1be0ec00-af4d-11eb-86df-7c85e3c3d206.png)
