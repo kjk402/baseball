@@ -3,11 +3,11 @@
 
 ## 팀원
 
-- FE:
-  [Daisy](https://github.com/damilog) : 이게 된다고?? 되네???
-  [ppamppam](https://github.com/ppamppamman) : GAZUAAAAA!!!! 
-- BE:
-  [Bat](https://github.com/kjk402) : 어? 제 로컬에선 잘 됐거든요?
+- FE
+  - [Daisy](https://github.com/damilog) : 이게 된다고?? 되네???
+  - [ppamppam](https://github.com/ppamppamman) : GAZUAAAAA!!!! 
+- BE
+  - [Bat](https://github.com/kjk402) : 어? 제 로컬에선 잘 됐거든요?
 
 ### 개발 환경
 ![React](https://user-images.githubusercontent.com/59398492/117407860-1e8e1200-af4a-11eb-8091-df53aa2649c2.jpg)
