@@ -11,7 +11,7 @@
 
 ### 개발 환경
 ![React](https://user-images.githubusercontent.com/59398492/117407860-1e8e1200-af4a-11eb-8091-df53aa2649c2.jpg)
-![intellij](https://user-images.githubusercontent.com/59398492/114123155-b76e4500-992c-11eb-9fab-bf298e70b01b.jpg)
+![spring](https://user-images.githubusercontent.com/59398492/117413573-1ab1be00-af51-11eb-962a-876ec517474c.png)
 ![mysql](https://user-images.githubusercontent.com/59398492/114123158-b89f7200-992c-11eb-9392-e8823d075aa7.png)
 ![AWS](https://user-images.githubusercontent.com/59398492/114123162-b9380880-992c-11eb-9446-25729659d477.png)
 
