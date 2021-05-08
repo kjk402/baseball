@@ -1,6 +1,7 @@
 package com.codesquad.baseball.team14.domain.game;
 
 import com.codesquad.baseball.team14.domain.Team;
+import com.codesquad.baseball.team14.domain.UserType;
 import org.springframework.data.annotation.Id;
 
 import java.util.HashSet;
@@ -17,16 +18,15 @@ public class Game {
 
     private Set<ScoreBoard> scoreBoard = new HashSet<>();
 
-    private String userType;
+    private UserType userType;
 
-    public Game(Long id, Team away, Team home, String userType) {
-        this.id = id;
+    public Game(Team away, Team home, UserType userType) {
         this.away = away;
         this.home = home;
         this.userType = userType;
     }
 
-    public Game(Long id, Team away, Team home, Set<ScoreBoard> scoreBoard, String userType) {
+    public Game(Long id, Team away, Team home, Set<ScoreBoard> scoreBoard, UserType userType) {
         this.id = id;
         this.away = away;
         this.home = home;
@@ -46,7 +46,7 @@ public class Game {
         return home;
     }
 
-    public String getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
@@ -76,5 +76,4 @@ public class Game {
                 ", userType='" + userType + '\'' +
                 '}';
     }
-
 }
