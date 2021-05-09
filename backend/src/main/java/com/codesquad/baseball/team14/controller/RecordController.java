@@ -22,7 +22,7 @@ public class RecordController {
     @PatchMapping("/record/{playerName}")
     @ApiOperation(value = "기록 업데이트", notes = "플레이어의 기록을 업데이트합니다")
     public ResponseEntity<String> orderDish(@ApiParam("플레이어 식별자") @PathVariable("playerName") String playerName,
-                                            @RequestParam(value = "hit&out",required=false) String hitOrOut) {
+                                            @RequestParam(value = "hit&out", required = false) String hitOrOut) {
         hitOrOut = hitOrOut.toLowerCase();
         int hits;
         int outs;

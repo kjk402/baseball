@@ -22,7 +22,6 @@ DROP TABLE IF EXISTS `baseball`.`team` ;
 CREATE TABLE IF NOT EXISTS `baseball`.`team` (
     `id` INT,
     `team_name` VARCHAR(50),
-    `selected` VARCHAR(50),
     PRIMARY KEY (`team_name`))
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;

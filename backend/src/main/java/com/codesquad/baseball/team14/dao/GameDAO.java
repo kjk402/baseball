@@ -1,21 +1,17 @@
 package com.codesquad.baseball.team14.dao;
 
-
 import com.codesquad.baseball.team14.domain.UserType;
-import com.codesquad.baseball.team14.domain.game.Game;
-import com.codesquad.baseball.team14.domain.game.GameRepository;
 import com.codesquad.baseball.team14.domain.game.ScoreBoard;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class GameDAO {
@@ -23,13 +19,11 @@ public class GameDAO {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private ScoreBoardDAO scoreBoardDAO;
-    private GameRepository gameRepository;
 
-    public GameDAO(DataSource dataSource, ScoreBoardDAO scoreBoardDAO, GameRepository gameRepository) {
+    public GameDAO(DataSource dataSource, ScoreBoardDAO scoreBoardDAO) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.scoreBoardDAO = scoreBoardDAO;
-        this.gameRepository = gameRepository;
     }
 
     public Long saveGameAndScoreBoard(String home, String away, UserType userType) {
@@ -55,6 +49,12 @@ public class GameDAO {
 
     public void createScoreBoard(Long gameId, ScoreBoard scoreBoard) {
         scoreBoardDAO.createScoreBoard(scoreBoard);
+    }
+
+    public String findUserTeamNameByGameId(Long id) {
+        String sql = "select if(g.user_type = 'home',g.home,g.away) as user_team_name from game g where g.id = " + id;
+        List<String> query = jdbcTemplate.query(sql, (rs, rowNum) -> rs.getString("user_team_name"));
+        return query.get(0);
     }
 
 }

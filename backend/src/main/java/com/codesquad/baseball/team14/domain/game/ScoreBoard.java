@@ -20,9 +20,19 @@ public class ScoreBoard {
         this.innings = innings;
     }
 
+    public ScoreBoard(Long id, Long gameId, String team) {
+        this.id = id;
+        this.game = gameId;
+        this.team = team;
+    }
+
     public ScoreBoard(Long gameId, String team) {
         this.game = gameId;
         this.team = team;
+    }
+
+    public Innings updateScore(int round, int point) {
+        return new Innings(this.id, point, round);
     }
 
     public Long getId() {
@@ -45,13 +55,4 @@ public class ScoreBoard {
         return innings;
     }
 
-    @Override
-    public String toString() {
-        return "ScoreBoard{" +
-                "id=" + id +
-                ", gameId=" + game +
-                ", team=" + team +
-                ", innings=" + innings +
-                '}';
-    }
 }

@@ -76,4 +76,5 @@ public class Game {
                 ", userType='" + userType + '\'' +
                 '}';
     }
+
 }

@@ -22,8 +22,8 @@ public class RecordService {
         return recordRepository.findRecordByPlayer(playerName);
     }
 
-    public LinkedHashMap<String,Record> getRecordByPlayer(List<Player> players) {
-        LinkedHashMap<String, Record> recordList =  new LinkedHashMap<>();
+    public LinkedHashMap<String, Record> getRecordByPlayer(List<Player> players) {
+        LinkedHashMap<String, Record> recordList = new LinkedHashMap<>();
         for (Player player : players) {
             recordList.put(player.getPlayerName(), recordRepository.findRecordByPlayer(player.getPlayerName()));
         }

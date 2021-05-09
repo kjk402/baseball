@@ -20,7 +20,7 @@ public class TeamService {
         this.recordService = recordService;
     }
 
-    public Team findTeam(String teamName){
+    public Team findTeam(String teamName) {
         return teamRepository.findByTeamName(teamName);
     }
 

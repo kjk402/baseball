@@ -1,7 +1,6 @@
 package com.codesquad.baseball.team14.controller;
 
 
-import com.codesquad.baseball.team14.domain.Record;
 import com.codesquad.baseball.team14.domain.Team;
 import com.codesquad.baseball.team14.dto.TeamDto;
 import com.codesquad.baseball.team14.service.RecordService;
