@@ -10,6 +10,10 @@ public class ScoreBoard {
 
     private Long game;
     private String team;
+
+    private String opponentPitcher;
+    private String currentHitter;
+
     private List<Innings> innings;
 
 
@@ -24,6 +28,14 @@ public class ScoreBoard {
         this.id = id;
         this.game = gameId;
         this.team = team;
+    }
+
+    public ScoreBoard(Long id, Long gameId, String team, String opponentPitcher, String currentHitter) {
+        this.id = id;
+        this.game = gameId;
+        this.team = team;
+        this.opponentPitcher = opponentPitcher;
+        this.currentHitter = currentHitter;
     }
 
     public ScoreBoard(Long gameId, String team) {

@@ -77,6 +77,8 @@ CREATE TABLE IF NOT EXISTS `baseball`.`score_board`
 (
     id   BIGINT auto_increment primary key,
     game BIGINT references game (id),
+    opponent_pitcher varchar(20),
+    current_hitter varchar(20),
     team varchar(20) references team (team_name)
 );
 

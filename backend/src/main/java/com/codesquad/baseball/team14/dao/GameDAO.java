@@ -11,6 +11,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -19,19 +20,23 @@ public class GameDAO {
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private ScoreBoardDAO scoreBoardDAO;
+    private PlayerDAO playerDAO;
 
-    public GameDAO(DataSource dataSource, ScoreBoardDAO scoreBoardDAO) {
+    public GameDAO(DataSource dataSource, ScoreBoardDAO scoreBoardDAO, PlayerDAO playerDAO) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.scoreBoardDAO = scoreBoardDAO;
+        this.playerDAO = playerDAO;
     }
 
     public Long saveGameAndScoreBoard(String home, String away, UserType userType) {
         Long gameId = createGame(home, away, userType);
         ScoreBoard homeBoard = new ScoreBoard(gameId, home);
         ScoreBoard awayBoard = new ScoreBoard(gameId, away);
-        createScoreBoard(gameId, homeBoard);
-        createScoreBoard(gameId, awayBoard);
+        List<String> homePlayers = new ArrayList<>(playerDAO.getPlayerNames(home));
+        List<String> awayPlayers = new ArrayList<>(playerDAO.getPlayerNames(away));
+        createScoreBoard(gameId, homeBoard, awayPlayers.get(8), homePlayers.get(0));
+        createScoreBoard(gameId, awayBoard, homePlayers.get(8), awayPlayers.get(0));
         return gameId;
     }
 
@@ -47,8 +52,8 @@ public class GameDAO {
         return keyHolder.getKey().longValue();
     }
 
-    public void createScoreBoard(Long gameId, ScoreBoard scoreBoard) {
-        scoreBoardDAO.createScoreBoard(scoreBoard);
+    public void createScoreBoard(Long gameId, ScoreBoard scoreBoard, String opponentPitcher, String currentHitter) {
+        scoreBoardDAO.createScoreBoard(scoreBoard, opponentPitcher, currentHitter);
     }
 
     public String findUserTeamNameByGameId(Long id) {
@@ -57,4 +62,11 @@ public class GameDAO {
         return query.get(0);
     }
 
+    public void deleteGame(Long gameId) {
+        String sql = "DELETE g, s FROM game AS g INNER JOIN score_board AS s ON g.id = s.game where g.id = " + gameId;
+        jdbcTemplate.update(sql);
+    }
+
 }
+
+

@@ -7,6 +7,7 @@ import com.codesquad.baseball.team14.dao.ScoreBoardDAO;
 import com.codesquad.baseball.team14.domain.UserType;
 import com.codesquad.baseball.team14.domain.game.Innings;
 import com.codesquad.baseball.team14.domain.game.ScoreBoard;
+import com.codesquad.baseball.team14.dto.CurrentPlayerDto;
 import com.codesquad.baseball.team14.dto.PointDto;
 import com.codesquad.baseball.team14.dto.ScoreDto;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,14 @@ public class GameService {
                 .map(Innings::getScore)
                 .collect(Collectors.toList());
         return new ScoreDto(board.teamName(), scores);
+    }
+
+    public void deleteGame(Long gameId) {
+        gameDAO.deleteGame(gameId);
+    }
+
+    public CurrentPlayerDto getCurrent(String teamName) {
+        return scoreBoardDAO.findByTeamName(teamName);
     }
 
 }
