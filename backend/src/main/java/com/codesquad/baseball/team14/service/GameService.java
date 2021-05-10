@@ -46,7 +46,7 @@ public class GameService {
         return false;
     }
 
-    public void plusPoint(ScoreBoard scoreBoard, PointDto pointDto) {
+    public void createInning(ScoreBoard scoreBoard, PointDto pointDto) {
         Innings innings = scoreBoard.updateScore(pointDto.getInning(), pointDto.getPoint());
         inningsDAO.createInnings(innings);
     }
@@ -76,6 +76,11 @@ public class GameService {
 
     public CurrentPlayerDto getCurrent(String teamName) {
         return scoreBoardDAO.findByTeamName(teamName);
+    }
+
+    public void updateInning(PointDto pointDto) {
+        Long scoreBoardId = scoreBoardDAO.findScoreBoardId(pointDto.getTeamName());
+        inningsDAO.updateInning(scoreBoardId, pointDto.getInning(), pointDto.getPoint());
     }
 
 }

@@ -58,11 +58,18 @@ public class GameController {
     }
 
     @PostMapping("/{gameId}/points")
-    @ApiOperation(value = "점수 추가합니다.", notes = "유저가 홈팀으로 게임 생성합니다.")
+    @ApiOperation(value = "이닝 생성", notes = "이닝 생성합니다.")
     @ResponseStatus(HttpStatus.OK)
     public void plusPoint(@ApiParam("게임 식별자") @PathVariable Long gameId, @RequestBody PointDto pointDto) {
         ScoreBoard scoreBoard = gameService.findScoreBoardByTeamName(gameId, pointDto);
-        gameService.plusPoint(scoreBoard, pointDto);
+        gameService.createInning(scoreBoard, pointDto);
+    }
+
+    @PatchMapping("/{gameId}/points")
+    @ApiOperation(value = "점수 추가", notes = "이닝의 점수 추가합니다.")
+    @ResponseStatus(HttpStatus.OK)
+    public void updatePoint(@ApiParam("게임 식별자") @PathVariable Long gameId, @RequestBody PointDto pointDto) {
+        gameService.updateInning(pointDto);
     }
 
     @GetMapping("/{gameId}/points")
@@ -89,7 +96,7 @@ public class GameController {
     }
 
     @GetMapping("/{teamName}/currentPlayer")
-    @ApiOperation(value = "현재 팀", notes = "상태팀 투수와 현재 타석 선수반환합니다.")
+    @ApiOperation(value = "현재 타석과 상대 투수 보기", notes = "상태팀 투수와 현재 타석 선수반환합니다.")
     @ResponseStatus(HttpStatus.OK)
     public CurrentPlayerDto getCurrentPlayer(@ApiParam("팀 식별자") @PathVariable String teamName) {
         CurrentPlayerDto currentPlayerDto = gameService.getCurrent(teamName);

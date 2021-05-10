@@ -123,4 +123,11 @@ public class ScoreBoardDAO {
         jdbcTemplate.update(sql);
     }
 
+    public Long findScoreBoardId(String teamName) {
+        Long scoreBoardId;
+        String sql = "SELECT s.id FROM score_board s WHERE s.team = '" + teamName + "'";
+        scoreBoardId = this.jdbcTemplate.queryForObject(sql, Long.class);
+        return scoreBoardId;
+    }
+
 }

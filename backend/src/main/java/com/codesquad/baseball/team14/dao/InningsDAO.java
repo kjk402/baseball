@@ -47,4 +47,19 @@ public class InningsDAO {
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 
+    public void updateInning22(Long scoreBoardId, int inning, int point) {
+        String sql = "UPDATE innings SET score = score + " + point + " WHERE innings.score_board = " + scoreBoardId +" AND innings.score_board_key = "+ inning;
+        jdbcTemplate.update(sql);
+    }
+
+    public void updateInning(Long scoreBoardId, int inning, int point) {
+        String sql = "UPDATE innings SET score = score + :point WHERE score_board = :score_board_id AND score_board_key = :inning";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("point", point)
+                .addValue("score_board_id", scoreBoardId)
+                .addValue("inning", inning);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+    }
+
 }
+
