@@ -25,8 +25,7 @@ public class PlayerDAO {
         List<String> players = new ArrayList<>();
         String sql = "SELECT player.* FROM baseball.player WHERE player.team = '" + teamName + "'";
         jdbcTemplate.query(sql, (rs, rowNum) -> players.add(rs.getString("player_name")
-
-                ));
+        ));
         return players;
     }
 

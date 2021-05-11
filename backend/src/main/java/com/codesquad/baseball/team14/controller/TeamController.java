@@ -21,7 +21,6 @@ public class TeamController {
     private final TeamService teamService;
     private final RecordService recordService;
 
-
     public TeamController(TeamService teamService, RecordService recordService) {
         this.teamService = teamService;
         this.recordService = recordService;

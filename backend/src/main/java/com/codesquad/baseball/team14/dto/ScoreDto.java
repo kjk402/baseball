@@ -18,4 +18,5 @@ public class ScoreDto {
     public List<Integer> getPoint() {
         return point;
     }
+
 }

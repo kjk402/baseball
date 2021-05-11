@@ -16,4 +16,5 @@ public class GameScoreDto {
     public ScoreDto getOpponent() {
         return opponent;
     }
+
 }
