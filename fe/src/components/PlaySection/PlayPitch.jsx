@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-const pitchResultList = ["⚡️STRIKE⚡️", "💥BALL💥", "☠️OUT☠️"];
+//const pitchResultList = ["⚡️STRIKE⚡️", "💥BALL💥", "☠️OUT☠️"];
 
 const judge = ({ SBOState, dispatch }) => {
   const { strike, ball, out } = SBOState;
@@ -14,8 +14,8 @@ const judge = ({ SBOState, dispatch }) => {
 };
 
 const getRandomPitchResult = () => {
-  const SB = ["STRIKE", "BALL"];
-  const radomNumber = Math.floor(Math.random() * 2);
+  const SB = ["STRIKE", "BALL", "OUT", "HIT"];
+  const radomNumber = Math.floor(Math.random() * 4);
   return SB[`${radomNumber}`];
 };
 let playSectionWidth, playSectionHeight;
@@ -39,7 +39,6 @@ const PlayPitch = ({ SBOState, dispatch }) => {
 };
 
 const PitchButtonLayout = styled.div`
-  outline: 10px solid red;
   position: absolute;
   width: 100%;
   height: 100%;

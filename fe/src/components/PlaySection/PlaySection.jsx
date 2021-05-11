@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { useRef, useEffect, useReducer } from "react";
-import PlayInning from "./PlayInning";
-import PlayPitch from "./PlayPitch";
-import PlaySBOInfo from "./PlaySBOInfo";
-import PlayField from "./PlayField";
+import PlayInning from "./PlayInning.jsx";
+import PlayPitch from "./PlayPitch.jsx";
+import PlaySBOInfo from "./PlaySBOInfo.jsx";
+import PlayField from "./PlayField.jsx";
 
 const initialSBOState = {
   strike: 0,
@@ -19,6 +19,8 @@ const SBOReducer = (state, action) => {
       return { ...state, ball: state.ball + 1 };
     case "OUT":
       return { ...state, out: state.out + 1 };
+    case "HIT":
+      return { ...state, strike: 0, ball: 0 };
     case "SB_RESET":
       return { ...state, strike: 0, ball: 0 };
     case "TOTAL_RESET":
@@ -30,7 +32,7 @@ const SBOReducer = (state, action) => {
 
 const PlaySection = props => {
   const [SBOState, dispatch] = useReducer(SBOReducer, initialSBOState);
-
+  console.log(SBOState);
   return (
     <PlaySectionLayout className={props.className}>
       <PlaySBOInfo SBOState={SBOState} />

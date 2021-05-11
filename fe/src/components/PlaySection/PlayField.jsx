@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import PlayFieldCanvas from "./PlayFieldCanvas";
+import PlayFieldCanvas from "./PlayFieldCanvas.jsx";
 
 const PlayField = () => {
   return (
