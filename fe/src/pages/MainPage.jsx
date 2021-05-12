@@ -12,9 +12,7 @@ const MainPage = () => {
     <MainPageLayout>
       <ScoreBoard className={"grid-area__Score"} />
       <CurrentPlayer className={"grid-area__CurrentPlayer"} />
-
       <PlaySection className={"grid-area__Play"} />
-
       <HistoryList className={"grid-area__History"} />
     </MainPageLayout>
   );
