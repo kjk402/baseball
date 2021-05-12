@@ -1,8 +1,22 @@
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 import HistoryCard from './HistoryCard.js';
 
+import { useHistoryState, useHistoryDispatch } from '../../util/store/HistoryContext.js';
+
 const HistoryList = (props) => {
+  const historyState = useHistoryState();
+  const historyDispatch = useHistoryDispatch();
+  
+  useEffect(() => {
+    historyDispatch({ type: `game/init` });
+    console.log("is INIT?")
+  }, [])
+  useEffect(() => {
+    console.log(historyState)
+  })
+  
   return (
     <HistoryListLayout className={props.className}>
       <HistoryCard className={'history-card'} isCurrent={true}/>
