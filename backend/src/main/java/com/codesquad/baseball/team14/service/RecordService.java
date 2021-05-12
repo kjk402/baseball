@@ -1,5 +1,6 @@
 package com.codesquad.baseball.team14.service;
 
+import com.codesquad.baseball.team14.dao.ScoreBoardDAO;
 import com.codesquad.baseball.team14.domain.Player;
 import com.codesquad.baseball.team14.domain.Record;
 import com.codesquad.baseball.team14.domain.RecordRepository;
@@ -13,17 +14,19 @@ import java.util.Map;
 @Service
 public class RecordService {
     private final RecordRepository recordRepository;
+    private final ScoreBoardDAO scoreBoardDAO;
 
-    public RecordService(RecordRepository recordRepository) {
+    public RecordService(RecordRepository recordRepository, ScoreBoardDAO scoreBoardDAO) {
         this.recordRepository = recordRepository;
+        this.scoreBoardDAO = scoreBoardDAO;
     }
 
     public Record getRecordByPlayer(String playerName) {
         return recordRepository.findRecordByPlayer(playerName);
     }
 
-    public LinkedHashMap<String,Record> getRecordByPlayer(List<Player> players) {
-        LinkedHashMap<String, Record> recordList =  new LinkedHashMap<>();
+    public LinkedHashMap<String, Record> getRecordByPlayer(List<Player> players) {
+        LinkedHashMap<String, Record> recordList = new LinkedHashMap<>();
         for (Player player : players) {
             recordList.put(player.getPlayerName(), recordRepository.findRecordByPlayer(player.getPlayerName()));
         }
@@ -33,6 +36,7 @@ public class RecordService {
     public void updateRecord(String playerName, int hits, int outs) {
         Record record = recordRepository.findRecordByPlayer(playerName);
         record.update(hits, outs);
+        scoreBoardDAO.updatePlayer(playerName);
         recordRepository.updateRecord(record.getAtBat(), record.getHits(), record.getOuts(), playerName);
     }
 

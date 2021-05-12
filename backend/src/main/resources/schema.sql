@@ -22,7 +22,6 @@ DROP TABLE IF EXISTS `baseball`.`team` ;
 CREATE TABLE IF NOT EXISTS `baseball`.`team` (
     `id` INT,
     `team_name` VARCHAR(50),
-    `selected` VARCHAR(50),
     PRIMARY KEY (`team_name`))
     ENGINE = InnoDB
     DEFAULT CHARACTER SET = utf8;
@@ -78,6 +77,8 @@ CREATE TABLE IF NOT EXISTS `baseball`.`score_board`
 (
     id   BIGINT auto_increment primary key,
     game BIGINT references game (id),
+    opponent_pitcher varchar(20),
+    current_hitter varchar(20),
     team varchar(20) references team (team_name)
 );
 

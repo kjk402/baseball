@@ -137,5 +137,23 @@ VALUES
 
 
 
+insert into game(id, home, away, user_type)
+values (1, '두산 베어스', 'SSG 랜더스', 'HOME');
+
+insert into score_board(id, game, opponent_pitcher, current_hitter,team)
+values (1, 1, '김광현', '허경민','두산 베어스');
+
+insert into score_board(id, game,opponent_pitcher, current_hitter, team)
+values (2, 1, '유희관','최정','SSG 랜더스');
+
+insert into innings (id, score, score_board, score_board_key)
+values (1, 0, 1, 1),
+       (2, 2, 1, 2),
+       (3, 1, 1, 3);
+
+insert into innings (id, score, score_board, score_board_key)
+values (4, 2, 2, 1),
+       (5, 0, 2, 2),
+       (6, 0, 2, 3);
 
 

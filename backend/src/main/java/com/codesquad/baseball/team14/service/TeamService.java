@@ -20,6 +20,10 @@ public class TeamService {
         this.recordService = recordService;
     }
 
+    public Team findTeam(String teamName) {
+        return teamRepository.findByTeamName(teamName);
+    }
+
     public List<Team> getList() {
         return teamRepository.findAllTeams();
     }

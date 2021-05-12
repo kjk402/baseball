@@ -1,7 +1,6 @@
 package com.codesquad.baseball.team14.controller;
 
 
-import com.codesquad.baseball.team14.domain.Record;
 import com.codesquad.baseball.team14.domain.Team;
 import com.codesquad.baseball.team14.dto.TeamDto;
 import com.codesquad.baseball.team14.service.RecordService;
@@ -21,7 +20,6 @@ import java.util.List;
 public class TeamController {
     private final TeamService teamService;
     private final RecordService recordService;
-
 
     public TeamController(TeamService teamService, RecordService recordService) {
         this.teamService = teamService;
