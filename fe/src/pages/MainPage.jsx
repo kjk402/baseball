@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
-import PlaySection from "../components/PlaySection/PlaySection";
+import { createContext, useReducer, useContext } from "react";
+import PlaySection from "../components/PlaySection/PlaySection.jsx";
 
 import CurrentPlayer from "../components/CurrentPlayerSection/CurrentPlayer.js";
 import ScoreBoard from "../components/ScoreBoard/ScoreBoard.jsx";
@@ -11,9 +12,7 @@ const MainPage = () => {
     <MainPageLayout>
       <ScoreBoard className={"grid-area__Score"} />
       <CurrentPlayer className={"grid-area__CurrentPlayer"} />
-
       <PlaySection className={"grid-area__Play"} />
-
       <HistoryList className={"grid-area__History"} />
     </MainPageLayout>
   );

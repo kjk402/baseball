@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useRef, useEffect, useReducer } from "react";
-import PlayInning from "./PlayInning";
-import PlayPitch from "./PlayPitch";
-import PlaySBOInfo from "./PlaySBOInfo";
-import PlayField from "./PlayField";
+import React, { useState, useEffect, useReducer, useContext } from "react";
+import PlayInning from "./PlayInning.jsx";
+import PlayPitch from "./PlayPitch.jsx";
+import PlaySBOInfo from "./PlaySBOInfo.jsx";
+import PlayField from "./PlayField.jsx";
 
 const initialSBOState = {
   strike: 0,
@@ -19,6 +19,8 @@ const SBOReducer = (state, action) => {
       return { ...state, ball: state.ball + 1 };
     case "OUT":
       return { ...state, out: state.out + 1 };
+    case "HIT":
+      return { ...state, strike: 0, ball: 0 };
     case "SB_RESET":
       return { ...state, strike: 0, ball: 0 };
     case "TOTAL_RESET":
@@ -28,17 +30,52 @@ const SBOReducer = (state, action) => {
   }
 };
 
+const initialBaseState = {
+  firstBase: false,
+  secondBase: false,
+  thirdBase: false,
+  homeBase: false,
+  point: 0,
+};
+
+const baseReducer = (state, action) => {
+  //들어올 데이터 move (언제? 4ball, hit 발생시) 공수 교대시 reset
+  switch (action.type) {
+    case "MOVE":
+      return {
+        ...state,
+        firstBase: true,
+        secondBase: state.firstBase,
+        thirdBase: state.secondBase,
+        homeBase: state.thirdBase,
+      };
+    case "POINT":
+      return { ...state, point: state.point + 1 };
+    case "RESET":
+      return { ...initialBaseState };
+
+    default:
+      throw new Error(`Unhandled action type: ${action.type}`);
+  }
+};
+
 const PlaySection = props => {
-  const [SBOState, dispatch] = useReducer(SBOReducer, initialSBOState);
+  const [SBOState, SBODispatch] = useReducer(SBOReducer, initialSBOState);
+  const [baseState, baseDispatch] = useReducer(baseReducer, initialBaseState);
+  const [points, setPoints] = useState(0);
 
   return (
     <PlaySectionLayout className={props.className}>
       <PlaySBOInfo SBOState={SBOState} />
-      <PlayField />
+      <PlayField {...{ baseState }} />
       <PlayPitch
         {...{
           SBOState,
-          dispatch,
+          SBODispatch,
+          baseState,
+          baseDispatch,
+          points,
+          setPoints,
         }}
       />
       <PlayInning></PlayInning>

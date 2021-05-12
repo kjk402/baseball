@@ -1,37 +1,76 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-const pitchResultList = ["⚡️STRIKE⚡️", "💥BALL💥", "☠️OUT☠️"];
+import { useState, useEffect, useCallback, useContext } from "react";
 
-const judge = ({ SBOState, dispatch }) => {
-  const { strike, ball, out } = SBOState;
+//const pitchResultList = ["⚡️STRIKE⚡️", "💥BALL💥", "☠️OUT☠️"];
 
-  if (strike === 3) {
-    dispatch({ type: "OUT" });
-    dispatch({ type: "SB_RESET" });
-  }
-  if (ball === 4) dispatch({ type: "SB_RESET" });
-  if (out === 3) dispatch({ type: "TOTAL_RESET" });
-};
+// useEffect..로 처리
+// use callback 궁금한 점 usecallback 쓰려고 Playpitch 안에 함수 계속 정의해도 되는지? 지금 모든 함수에 다 useCallback썼는데 의미없어보임
 
-const getRandomPitchResult = () => {
-  const SB = ["STRIKE", "BALL"];
-  const radomNumber = Math.floor(Math.random() * 2);
-  return SB[`${radomNumber}`];
-};
-let playSectionWidth, playSectionHeight;
+const PlayPitch = ({
+  SBOState,
+  SBODispatch,
+  baseState,
+  baseDispatch,
+  points,
+  setPoints,
+}) => {
+  //useCallback 지우고.. 컴포넌트 밖으로 함수 빼자..너무 더러움
+  const judge = useCallback(
+    (SBOState, SBODispatch, baseState, baseDispatch, pitchResult) => {
+      const { strike, ball, out } = SBOState;
+      if (strike === 2 && pitchResult === "STRIKE") {
+        SBODispatch({ type: "OUT" });
+        SBODispatch({ type: "SB_RESET" });
+      }
+      if (ball === 3 && pitchResult === "BALL") {
+        SBODispatch({ type: "SB_RESET" }); //4 ball -> 주자이동
+        baseDispatch({ type: "MOVE" });
+        updatePoints(baseState);
+      }
 
-const PlayPitch = ({ SBOState, dispatch }) => {
-  const updateSBO = () => {
+      if (pitchResult === "HIT") {
+        baseDispatch({ type: "MOVE" }); //안타 -> 주자이동
+        updatePoints(baseState);
+      }
+
+      if (out === 2 && pitchResult === "OUT") {
+        //공수 교대 일어나는 곳
+        SBODispatch({ type: "TOTAL_RESET" }); //3 Out -> 공수 교대, 상태 리셋
+        baseDispatch({ type: "RESET" }); //화면 주자 리셋
+        //공수 교대 api 요청
+      }
+    }
+  );
+
+  const getRandomPitchResult = useCallback(() => {
+    const SB = ["STRIKE", "BALL", "OUT", "HIT"];
+    const radomNumber = Math.floor(Math.random() * SB.length);
+    return SB[`${radomNumber}`];
+  });
+
+  const updateSBO = useCallback(() => {
     const pitchResult = getRandomPitchResult();
-    dispatch({ type: pitchResult }); //strike 3이랑 ball 4가 화면에 보임 ...
-    judge({ SBOState, dispatch });
+    console.log(pitchResult);
+    SBODispatch({ type: pitchResult });
+    //빰빰이 보내준 context 에 pitch result 넣어주기
+    judge(SBOState, SBODispatch, baseState, baseDispatch, pitchResult); //여기 부분 그냥 props 받아서 내려주고 judge에서 받을 때 분해하기
+  });
+
+  const updatePoints = baseState => {
+    //만루 상태에서 히트나 ball4로 MOVE가 일어났을 때 점수 +1
+    const { thirdBase } = baseState;
+    if (thirdBase) baseDispatch({ type: "POINT" });
   };
 
   return (
     <PitchButtonLayout>
       {/* <Ball /> */}
       {/* <PitchResult>{pitchResult}</PitchResult> */}
-      <PitchButton _left={playSectionWidth} onClick={updateSBO}>
+      <PitchButton
+        onClick={() => {
+          updateSBO();
+        }}
+      >
         PITCH
       </PitchButton>
     </PitchButtonLayout>
@@ -39,7 +78,6 @@ const PlayPitch = ({ SBOState, dispatch }) => {
 };
 
 const PitchButtonLayout = styled.div`
-  outline: 10px solid red;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -58,7 +96,7 @@ const PitchResult = styled.div`
 const PitchButton = styled.div`
   position: absolute;
   top: 50%;
-  left: 45%;
+  left: 43%;
   width: 13rem;
   padding: 10px;
   border: 1px solid white;
