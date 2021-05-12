@@ -4,11 +4,13 @@ public class CurrentPlayerDto {
     private String teamName;
     private String opponentPitcher;
     private String currentHitter;
+    private CurrentPlayerRecord currentPlayerRecord;
 
-    public CurrentPlayerDto(String teamName, String opponentPitcher, String currentHitter) {
+    public CurrentPlayerDto(String teamName, String opponentPitcher, String currentHitter, CurrentPlayerRecord currentPlayerRecord) {
         this.teamName = teamName;
         this.opponentPitcher = opponentPitcher;
         this.currentHitter = currentHitter;
+        this.currentPlayerRecord = currentPlayerRecord;
     }
 
     public String getTeamName() {
@@ -23,4 +25,7 @@ public class CurrentPlayerDto {
         return currentHitter;
     }
 
+    public CurrentPlayerRecord getBatHitDto() {
+        return currentPlayerRecord;
+    }
 }
