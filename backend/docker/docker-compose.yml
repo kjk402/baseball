@@ -20,4 +20,4 @@ services:
     image: adminer
     container_name: adminer
     ports:
-      - 9984:8080
+      - 8884:8080

@@ -65,10 +65,10 @@ public class GameController {
         gameService.createInning(scoreBoard, pointDto);
     }
 
-    @PatchMapping("/{gameId}/points")
+    @PatchMapping("/plus-points")
     @ApiOperation(value = "점수 추가", notes = "이닝의 점수 추가합니다.")
     @ResponseStatus(HttpStatus.OK)
-    public void updatePoint(@ApiParam("게임 식별자") @PathVariable Long gameId, @RequestBody PointDto pointDto) {
+    public void updatePoint(@RequestBody PointDto pointDto) {
         gameService.updateInning(pointDto);
     }
 
@@ -86,13 +86,6 @@ public class GameController {
             return new GameScoreDto(teamScoreDTO, teamScoreDTO1);
         }
         return new GameScoreDto(teamScoreDTO1, teamScoreDTO);
-    }
-
-    @DeleteMapping("/{gameId}")
-    @ApiOperation(value = "게임 삭제", notes = "게임 데이터 삭제합니다.")
-    public String deleteGame(@ApiParam("게임 식별자") @PathVariable Long gameId) {
-        gameService.deleteGame(gameId);
-        return gameId + "삭제했습니다.";
     }
 
     @GetMapping("/{teamName}/currentPlayer")
