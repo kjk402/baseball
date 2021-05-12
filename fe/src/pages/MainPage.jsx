@@ -1,19 +1,22 @@
 import styled from "styled-components";
 
-import { createContext, useReducer, useContext } from "react";
 import PlaySection from "../components/PlaySection/PlaySection.jsx";
-
 import CurrentPlayer from "../components/CurrentPlayerSection/CurrentPlayer.js";
 import ScoreBoard from "../components/ScoreBoard/ScoreBoard.jsx";
 import HistoryList from "../components/HistorySection/HistoryList.js";
+
+import HistoryProvider from "../util/store/HistoryContext.js";
 
 const MainPage = () => {
   return (
     <MainPageLayout>
       <ScoreBoard className={"grid-area__Score"} />
       <CurrentPlayer className={"grid-area__CurrentPlayer"} />
-      <PlaySection className={"grid-area__Play"} />
-      <HistoryList className={"grid-area__History"} />
+      
+      <HistoryProvider>  
+        <PlaySection className={"grid-area__Play"} />
+        <HistoryList className={"grid-area__History"} />
+      </HistoryProvider>        
     </MainPageLayout>
   );
 };
@@ -37,8 +40,8 @@ const MainPageLayout = styled.div`
     background-color: black;
   }
   .grid-area__Play {
-    position: relative;
     grid-area: Play;
+    position: relative;
   }
   .grid-area__History {
     grid-area: History;

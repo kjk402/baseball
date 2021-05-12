@@ -2,7 +2,12 @@ import styled from 'styled-components';
 
 import HistoryCard from './HistoryCard.js';
 
+import { useHistoryState } from '../../util/store/HistoryContext.js';
+
 const HistoryList = (props) => {
+  const state = useHistoryState()
+  console.log(state);
+  
   return (
     <HistoryListLayout className={props.className}>
       <HistoryCard className={'history-card'} isCurrent={true}/>
