@@ -1,18 +1,33 @@
 import styled from "styled-components";
 import PlayFieldCanvas from "./PlayFieldCanvas.jsx";
 
-const PlayField = () => {
+//hit 상태에 따라서 running 렌더를 해주자
+//달리는건 2초뒤에 사라지게
+const renderPlayer = baseState => {
+  console.log("render:", baseState);
+  console.log(baseState.firstBase); //왜 undefined?
+  const { firstBase, secondBase, thirdBase, homeBase } = baseState; //왜 undefined?
+  console.log(firstBase, secondBase, thirdBase, homeBase);
+  if (firstBase) return <RunningHomeToFirst />;
+  if (secondBase) return <RunningFirstToSecond />;
+  if (thirdBase) return <RunningSecondToThird />;
+  if (homeBase) return <RunningThirdToHome />;
+};
+const PlayField = baseState => {
   return (
-    <div>
-      <PlayFieldCanvas />
-      {/* <RunningHomeToFirst />
+    baseState && (
+      <div>
+        {renderPlayer(baseState)}
+        {/* <PlayFieldCanvas />
+      <RunningHomeToFirst />
       <RunningFirstToSecond />
       <RunningSecondToThird />
       <RunningThirdToHome /> */}
-      <PlayerOnFirstBase />
+        {/* <PlayerOnFirstBase />
       <PlayerOnSecondBase />
-      <PlayerOnThirdBase />
-    </div>
+      <PlayerOnThirdBase /> */}
+      </div>
+    )
   );
 };
 
@@ -32,7 +47,6 @@ const RunningPlayer = styled.img.attrs({
 })``;
 
 const RunningHomeToFirst = styled(RunningPlayer)`
-  //display:none;
   width: 7rem;
   position: absolute;
   bottom: 10%;
