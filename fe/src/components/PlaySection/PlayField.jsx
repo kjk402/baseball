@@ -3,30 +3,59 @@ import PlayFieldCanvas from "./PlayFieldCanvas.jsx";
 
 //hit 상태에 따라서 running 렌더를 해주자
 //달리는건 2초뒤에 사라지게
-const renderPlayer = baseState => {
-  console.log("render:", baseState);
-  console.log(baseState.firstBase); //왜 undefined?
-  const { firstBase, secondBase, thirdBase, homeBase } = baseState; //왜 undefined?
-  console.log(firstBase, secondBase, thirdBase, homeBase);
-  if (firstBase) return <RunningHomeToFirst />;
-  if (secondBase) return <RunningFirstToSecond />;
-  if (thirdBase) return <RunningSecondToThird />;
-  if (homeBase) return <RunningThirdToHome />;
+
+const renderPlayer = ({ baseState }) => {
+  const { firstBase, secondBase, thirdBase, homeBase } = baseState;
+  //서있는 선수
+  if (homeBase)
+    return (
+      <>
+        <PlayerOnFirstBase />
+        <PlayerOnSecondBase />
+        <PlayerOnThirdBase />
+        <RunningThirdToHome />
+        <RunningSecondToThird />
+        <RunningFirstToSecond />
+        <RunningHomeToFirst />
+      </>
+    );
+  if (thirdBase)
+    return (
+      <>
+        <PlayerOnFirstBase />
+        <PlayerOnSecondBase />
+        <PlayerOnThirdBase />
+        <RunningSecondToThird />
+        <RunningFirstToSecond />
+        <RunningHomeToFirst />
+      </>
+    );
+  if (secondBase)
+    return (
+      <>
+        <RunningFirstToSecond />
+        <RunningHomeToFirst />
+        <PlayerOnFirstBase />
+        <PlayerOnSecondBase />
+      </>
+    );
+  if (firstBase) {
+    return (
+      <>
+        <RunningHomeToFirst />
+        <PlayerOnFirstBase />
+      </>
+    );
+  }
 };
+
 const PlayField = baseState => {
   return (
     baseState && (
-      <div>
+      <>
+        <PlayFieldCanvas></PlayFieldCanvas>
         {renderPlayer(baseState)}
-        {/* <PlayFieldCanvas />
-      <RunningHomeToFirst />
-      <RunningFirstToSecond />
-      <RunningSecondToThird />
-      <RunningThirdToHome /> */}
-        {/* <PlayerOnFirstBase />
-      <PlayerOnSecondBase />
-      <PlayerOnThirdBase /> */}
-      </div>
+      </>
     )
   );
 };
@@ -34,6 +63,7 @@ const PlayField = baseState => {
 const StandingPlayer = styled.img.attrs({
   src: `${"https://i.pinimg.com/originals/f7/5f/f2/f75ff23cd22d200f24bfd21f3a8b1f86.gif"}`,
 })`
+  animation-delay: 3s;
   width: 6rem;
   @media (max-width: 1200px) {
     width: 5rem;
@@ -42,9 +72,14 @@ const StandingPlayer = styled.img.attrs({
     width: 4rem;
   }
 `;
+
 const RunningPlayer = styled.img.attrs({
   src: `${"https://media.tenor.com/images/6d02cd24ab50932ca62ce555d74e384c/tenor.gif"}`,
-})``;
+})`
+  opacity: 0%;
+  animation-iteration-count: 1;
+  animation-duration: 2s;
+`;
 
 const RunningHomeToFirst = styled(RunningPlayer)`
   width: 7rem;
@@ -52,17 +87,17 @@ const RunningHomeToFirst = styled(RunningPlayer)`
   bottom: 10%;
   left: 48%;
   animation-name: homeToFirst;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
 
   @keyframes homeToFirst {
     from {
       bottom: 10%;
       left: 48%;
+      opacity: 100;
     }
     to {
       bottom: 48%;
       left: 86%;
+      opacity: 0;
     }
   }
   @media (max-width: 1200px) {
@@ -73,22 +108,21 @@ const RunningHomeToFirst = styled(RunningPlayer)`
   }
 `;
 const RunningFirstToSecond = styled(RunningPlayer)`
-  //display:none;
   width: 7rem;
   position: absolute;
   transform: rotateY(180deg);
   animation-name: firstToSecond;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
 
   @keyframes firstToSecond {
     from {
       top: 40%;
       right: 9%;
+      opacity: 100;
     }
     to {
       top: 17%;
       right: 48%;
+      opacity: 0;
     }
   }
   @media (max-width: 1200px) {
@@ -100,22 +134,22 @@ const RunningFirstToSecond = styled(RunningPlayer)`
 `;
 
 const RunningSecondToThird = styled(RunningPlayer)`
-  //display:none;
   width: 7rem;
   position: absolute;
   transform: rotateY(180deg);
   animation-name: secondToThird;
   animation-duration: 3s;
-  animation-iteration-count: infinite;
 
   @keyframes secondToThird {
     from {
       top: 17%;
       left: 48%;
+      opacity: 100;
     }
     to {
       top: 43%;
       left: 9%;
+      opacity: 0;
     }
   }
   @media (max-width: 1200px) {
@@ -127,21 +161,21 @@ const RunningSecondToThird = styled(RunningPlayer)`
 `;
 
 const RunningThirdToHome = styled(RunningPlayer)`
-  //display:none;
   width: 7rem;
   position: absolute;
   animation-name: thirdToHome;
   animation-duration: 3s;
-  animation-iteration-count: infinite;
 
   @keyframes thirdToHome {
     from {
       top: 43%;
       left: 9%;
+      opacity: 100;
     }
     to {
       top: 80%;
       left: 48%;
+      opacity: 0;
     }
   }
   @media (max-width: 1200px) {
