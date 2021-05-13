@@ -56,5 +56,19 @@ public class InningsDAO {
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 
+    public void deleteInnings(Long gameId) {
+        Long id1 = gameId*2 -1;
+        Long id2 = gameId*2;
+        String sql = "DELETE i FROM innings i where i.score_board =:id1 OR i.score_board=:id2";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("id1", id1)
+                .addValue("id2", id2);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
+    }
+
 }
+/*
+        String sql = "DELETE g, s FROM game AS g INNER JOIN score_board AS s ON g.id = s.game where g.id = " + gameId;
+
+ */
 

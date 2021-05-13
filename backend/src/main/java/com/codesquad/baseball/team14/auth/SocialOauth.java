@@ -1,8 +1,23 @@
 package com.codesquad.baseball.team14.auth;
+
 public interface SocialOauth {
-    /**
-     * 각 Social Login 페이지로 Redirect 처리할 URL Build
-     * 사용자로부터 로그인 요청을 받아 Social Login Server 인증용 code 요청
-     */
     String getOauthRedirectURL();
+
+
+    String requestAccessToken(String code);
+
+    default SocialLoginType type() {
+        if (this instanceof FacebookOauth) {
+            return SocialLoginType.FACEBOOK;
+        } else if (this instanceof GoogleOauth) {
+            return SocialLoginType.GOOGLE;
+        } else if (this instanceof NaverOauth) {
+            return SocialLoginType.NAVER;
+        } else if (this instanceof KakaoOauth) {
+            return SocialLoginType.KAKAO;
+        } else {
+            return null;
+        }
+    }
+
 }

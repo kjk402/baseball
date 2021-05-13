@@ -6,6 +6,3 @@ public enum SocialLoginType {
     KAKAO,
     NAVER
 }
-
-
-

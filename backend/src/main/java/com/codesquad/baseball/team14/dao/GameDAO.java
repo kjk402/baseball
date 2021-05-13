@@ -1,7 +1,9 @@
 package com.codesquad.baseball.team14.dao;
 
 import com.codesquad.baseball.team14.domain.UserType;
+import com.codesquad.baseball.team14.domain.game.Game;
 import com.codesquad.baseball.team14.domain.game.ScoreBoard;
+import com.codesquad.baseball.team14.dto.GameDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,12 +23,14 @@ public class GameDAO {
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private ScoreBoardDAO scoreBoardDAO;
     private PlayerDAO playerDAO;
+    private InningsDAO inningsDAO;
 
-    public GameDAO(DataSource dataSource, ScoreBoardDAO scoreBoardDAO, PlayerDAO playerDAO) {
+    public GameDAO(DataSource dataSource, ScoreBoardDAO scoreBoardDAO, PlayerDAO playerDAO, InningsDAO inningsDAO) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.scoreBoardDAO = scoreBoardDAO;
         this.playerDAO = playerDAO;
+        this.inningsDAO = inningsDAO;
     }
 
     public Long saveGameAndScoreBoard(String home, String away, UserType userType) {
@@ -62,11 +66,43 @@ public class GameDAO {
         return query.get(0);
     }
 
+
+
     public void deleteGame(Long gameId) {
+        inningsDAO.deleteInnings(gameId);
         String sql = "DELETE g, s FROM game AS g INNER JOIN score_board AS s ON g.id = s.game where g.id = " + gameId;
         jdbcTemplate.update(sql);
     }
 
+    public List<GameDto> findAll() {
+        String sql = "SELECT g.id, g.user_type, g.home, g.away FROM game g";
+
+        List<GameDto> gameList = new ArrayList<>();
+        jdbcTemplate.query(sql, (rs, rowNum) -> {
+            gameList.add(new GameDto(
+                    rs.getLong("id"),
+                    rs.getString("user_type"),
+                    rs.getString("home"),
+                    rs.getString("away")
+            ));
+            return null;
+        });
+        return gameList;
+    }
+
 }
 
+/*
+List<Innings> innings = new ArrayList<>();
+
+        jdbcTemplate.query(sql, (rs, rowNum) -> {
+            innings.add(new Innings(
+                    rs.getLong("id"),
+                    rs.getLong("score_board"),
+                    rs.getInt("score")
+            ));
+            return null;
+        });
+        return innings;
+ */
 

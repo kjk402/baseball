@@ -25,7 +25,7 @@ public class CurrentPlayerDto {
         return currentHitter;
     }
 
-    public CurrentPlayerRecord getBatHitDto() {
+    public CurrentPlayerRecord getCurrentPlayerRecord() {
         return currentPlayerRecord;
     }
 }
