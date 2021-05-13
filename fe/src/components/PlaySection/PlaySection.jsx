@@ -65,9 +65,10 @@ const baseReducer = (state, action) => {
 const PlaySection = props => {
   const [SBOState, SBODispatch] = useReducer(SBOReducer, initialSBOState);
   const [baseState, baseDispatch] = useReducer(baseReducer, initialBaseState);
-
+  const [inningPoint, setInningPoint] = useState(0);
   const historyDispatch = useHistoryDispatch();
 
+  console.log(inningPoint);
   useEffect(() => {
     setInitialInning();
     setInitialTurn(props.isDefense);
@@ -84,15 +85,16 @@ const PlaySection = props => {
   return (
     <PlaySectionLayout className={props.className}>
       <PlaySBOInfo SBOState={SBOState} />
-      <PlayField {...{ baseState }} />
+      <PlayField {...{ baseState, setInningPoint }} />
       <PlayPitch
         {...{
           SBOState,
           SBODispatch,
           baseState,
           baseDispatch,
-
           historyDispatch,
+          inningPoint,
+          setInningPoint,
         }}
       />
       <PlayInning></PlayInning>

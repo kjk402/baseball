@@ -1,11 +1,16 @@
 import styled from "styled-components";
 import { useState, useEffect, useCallback, useContext } from "react";
-import { requestPATCHrecord } from "../../util/gameAPI.js";
+import {
+  requestPATCHrecord,
+  requestPATCHInningPoint,
+  requestPOSTInning,
+} from "../../util/gameAPI.js";
 import {
   getPitchCnt,
   setInitialPitchCnt,
   updatePitchCnt,
   resetPitchCnt,
+  getInning,
 } from "../../util/action/game.js";
 
 //이닝 바꾸기, 공수 교체
@@ -16,9 +21,11 @@ const PlayPitch = ({
   baseState,
   baseDispatch,
   historyDispatch,
+  inningPoint,
+  setInningPoint,
 }) => {
   const [currentPitch, setCurrentPitch] = useState("");
-
+  const { thirdBase } = baseState;
   useEffect(() => {
     resetPitchCnt();
   }, []);
@@ -43,18 +50,25 @@ const PlayPitch = ({
       SBODispatch({ type: "SB_RESET" }); //4 ball -> 주자이동
       baseDispatch({ type: "MOVE" });
       updatePoints(baseState);
+      if (thirdBase) setInningPoint(x => x + 1);
     }
 
     if (pitchResult === "HIT") {
       baseDispatch({ type: "MOVE" }); //안타 -> 주자이동
       updatePoints(baseState);
+      if (thirdBase) setInningPoint(x => x + 1);
     }
 
     if (out === 2 && pitchResult === "OUT") {
       //공수 교대 일어나는 곳
+      requestPOSTInning(3, inningPoint, "두산 베어스"); //게임아이디,팀이름  서버에서 받아온걸로, 작동 x
+      requestPATCHInningPoint(3, getInning(), inningPoint, "두산 베어스"); //게임아이디,팀이름  서버에서 받아온걸로, 작동x
+      //isDefense 토글하는 것 추가
       SBODispatch({ type: "TOTAL_RESET" }); //3 Out -> 공수 교대, 상태 리셋
       baseDispatch({ type: "RESET" }); //화면 주자 리셋
       historyDispatch({ type: `game/init` });
+      resetPitchCnt();
+      setInningPoint(0);
 
       //공수 교대 api 요청 /games/{gameId}/points 이닝 생성 post 현재 게임, 현재 이닝 전체 공유
     }
@@ -75,6 +89,8 @@ const PlayPitch = ({
     }
   };
 
+  const updateInningPoints = () => {};
+
   const updateRecord = pitchResult => {
     if (pitchResult === "HIT") requestPATCHrecord("hit", "허경민"); //🔥현재 투수이름으로 넣어주기
     if (pitchResult === "OUT") requestPATCHrecord("out", "허경민");
@@ -91,7 +107,6 @@ const PlayPitch = ({
   });
 
   const updatePoints = baseState => {
-    const { thirdBase } = baseState;
     if (thirdBase) baseDispatch({ type: "POINT" });
   };
 

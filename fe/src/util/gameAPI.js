@@ -12,8 +12,13 @@ export const requestGETgamePoint = async gameId => {
   ).then(res => res.json());
   return currentGame;
 };
-export const requestPATCHInning = (gameId, inning, point, teamName) => {
-  fetch(`${API_URL}/games/${gameId}/points`, {
+export const requestPATCHInningPoint = async (
+  gameId,
+  inning,
+  point,
+  teamName
+) => {
+  let response = await fetch(`${API_URL}/games/${gameId}/points`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -25,8 +30,9 @@ export const requestPATCHInning = (gameId, inning, point, teamName) => {
       teamName: teamName,
     }),
   });
+  console.log(response);
 };
-
+//이닝 생성
 export const requestPOSTInning = async (gameId, point, teamName) => {
   let response = await fetch(`${API_URL}/games/${gameId}/points`, {
     method: "POST",

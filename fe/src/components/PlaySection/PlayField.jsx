@@ -4,7 +4,7 @@ import PlayFieldCanvas from "./PlayFieldCanvas.jsx";
 //hit 상태에 따라서 running 렌더를 해주자
 //달리는건 2초뒤에 사라지게
 
-const renderPlayer = ({ baseState }) => {
+const renderPlayer = baseState => {
   const { firstBase, secondBase, thirdBase, homeBase } = baseState;
   //서있는 선수
   if (homeBase)
@@ -49,7 +49,7 @@ const renderPlayer = ({ baseState }) => {
   }
 };
 
-const PlayField = baseState => {
+const PlayField = ({ baseState }) => {
   return (
     baseState && (
       <>
