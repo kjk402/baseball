@@ -1,5 +1,5 @@
 import styled from "styled-components";
-
+import { useState } from "react";
 import PlaySection from "../components/PlaySection/PlaySection.jsx";
 import CurrentPlayer from "../components/CurrentPlayerSection/CurrentPlayer.js";
 import ScoreBoard from "../components/ScoreBoard/ScoreBoard.jsx";
@@ -8,15 +8,20 @@ import HistoryList from "../components/HistorySection/HistoryList.js";
 import HistoryProvider from "../util/store/HistoryContext.js";
 
 const MainPage = () => {
+  const [isDefense, setIsDefense] = useState(true);
+
   return (
     <MainPageLayout>
       <ScoreBoard className={"grid-area__Score"} />
       <CurrentPlayer className={"grid-area__CurrentPlayer"} />
-      
-      <HistoryProvider>  
-        <PlaySection className={"grid-area__Play"} />
+
+      <HistoryProvider>
+        <PlaySection
+          className={"grid-area__Play"}
+          {...{ isDefense, setIsDefense }}
+        />
         <HistoryList className={"grid-area__History"} />
-      </HistoryProvider>        
+      </HistoryProvider>
     </MainPageLayout>
   );
 };
