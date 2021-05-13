@@ -1,54 +1,64 @@
 import styled from "styled-components";
 import { useState, useEffect, useCallback, useContext } from "react";
+import { requestPATCHrecord } from "../../util/gameAPI.js";
+import {
+  getPitchCnt,
+  setInitialPitchCnt,
+  updatePitchCnt,
+  resetPitchCnt,
+} from "../../util/action/game.js";
 
-//const pitchResultList = ["⚡️STRIKE⚡️", "💥BALL💥", "☠️OUT☠️"];
-
-// useEffect..로 처리
-// use callback 궁금한 점 usecallback 쓰려고 Playpitch 안에 함수 계속 정의해도 되는지? 지금 모든 함수에 다 useCallback썼는데 의미없어보임
+//이닝 바꾸기, 공수 교체
 
 const PlayPitch = ({
   SBOState,
   SBODispatch,
   baseState,
   baseDispatch,
-  points,
-  setPoints,
-  historyDispatch
+  historyDispatch,
 }) => {
-  //useCallback 지우고.. 컴포넌트 밖으로 함수 빼자..너무 더러움
-  const judge = useCallback(
-    (SBOState, SBODispatch, baseState, baseDispatch, pitchResult, historyDispatch) => {
-      const { strike, ball, out } = SBOState;
-      
-      historyDispatch({
-        type: `game/${pitchResult}`.toLowerCase(), 
-        payload: {strike: strike, ball: ball}
-      });
+  const [currentPitch, setCurrentPitch] = useState("");
 
-      if (strike === 2 && pitchResult === "STRIKE") {
-        SBODispatch({ type: "OUT" });
-        SBODispatch({ type: "SB_RESET" });
-      }
-      if (ball === 3 && pitchResult === "BALL") {
-        SBODispatch({ type: "SB_RESET" }); //4 ball -> 주자이동
-        baseDispatch({ type: "MOVE" });
-        updatePoints(baseState);
-      }
+  useEffect(() => {
+    resetPitchCnt();
+  }, []);
 
-      if (pitchResult === "HIT") {
-        baseDispatch({ type: "MOVE" }); //안타 -> 주자이동
-        updatePoints(baseState);
-      }
+  const updateHistory = pitchResult => {
+    historyDispatch({ type: `game/${pitchResult}` });
+  };
 
-      if (out === 2 && pitchResult === "OUT") {
-        //공수 교대 일어나는 곳
-        SBODispatch({ type: "TOTAL_RESET" }); //3 Out -> 공수 교대, 상태 리셋
-        baseDispatch({ type: "RESET" }); //화면 주자 리셋
-        historyDispatch({ type: `game/init` });
-        //공수 교대 api 요청
-      }
+  const judge = useCallback(pitchResult => {
+    const { strike, ball, out } = SBOState;
+
+    historyDispatch({
+      type: `game/${pitchResult}`.toLowerCase(),
+      payload: { strike: strike, ball: ball },
+    });
+
+    if (strike === 2 && pitchResult === "STRIKE") {
+      SBODispatch({ type: "OUT" });
+      SBODispatch({ type: "SB_RESET" });
     }
-  );
+    if (ball === 3 && pitchResult === "BALL") {
+      SBODispatch({ type: "SB_RESET" }); //4 ball -> 주자이동
+      baseDispatch({ type: "MOVE" });
+      updatePoints(baseState);
+    }
+
+    if (pitchResult === "HIT") {
+      baseDispatch({ type: "MOVE" }); //안타 -> 주자이동
+      updatePoints(baseState);
+    }
+
+    if (out === 2 && pitchResult === "OUT") {
+      //공수 교대 일어나는 곳
+      SBODispatch({ type: "TOTAL_RESET" }); //3 Out -> 공수 교대, 상태 리셋
+      baseDispatch({ type: "RESET" }); //화면 주자 리셋
+      historyDispatch({ type: `game/init` });
+
+      //공수 교대 api 요청 /games/{gameId}/points 이닝 생성 post 현재 게임, 현재 이닝 전체 공유
+    }
+  });
 
   const getRandomPitchResult = useCallback(() => {
     const SB = ["STRIKE", "BALL", "OUT", "HIT"];
@@ -56,27 +66,42 @@ const PlayPitch = ({
     return SB[`${radomNumber}`];
   });
 
-  const updateSBO = useCallback(() => {
+  const updatePitchCount = () => {
+    const LSPitchCnt = getPitchCnt();
+    if (!LSPitchCnt) {
+      setInitialPitchCnt();
+    } else {
+      updatePitchCnt();
+    }
+  };
+
+  const updateRecord = pitchResult => {
+    if (pitchResult === "HIT") requestPATCHrecord("hit", "허경민"); //🔥현재 투수이름으로 넣어주기
+    if (pitchResult === "OUT") requestPATCHrecord("out", "허경민");
+  };
+
+  const handlePitchResult = useCallback(() => {
     const pitchResult = getRandomPitchResult();
-    console.log(pitchResult);
+    setCurrentPitch(pitchResult);
     SBODispatch({ type: pitchResult });
-    //빰빰이 보내준 context 에 pitch result 넣어주기
-    judge(SBOState, SBODispatch, baseState, baseDispatch, pitchResult, historyDispatch); //여기 부분 그냥 props 받아서 내려주고 judge에서 받을 때 분해하기
+    judge(pitchResult);
+    updateRecord(pitchResult);
+    //🔥빰빰이 보내준 context 에 pitch result 넣어주기
+    //updateHistory(pitchResult); 🔥안 됨 빰빰 확인 부탁
   });
 
   const updatePoints = baseState => {
-    //만루 상태에서 히트나 ball4로 MOVE가 일어났을 때 점수 +1
     const { thirdBase } = baseState;
     if (thirdBase) baseDispatch({ type: "POINT" });
   };
 
   return (
     <PitchButtonLayout>
-      {/* <Ball /> */}
-      {/* <PitchResult>{pitchResult}</PitchResult> */}
+      <PitchResult>{currentPitch}</PitchResult>
       <PitchButton
         onClick={() => {
-          updateSBO();
+          handlePitchResult();
+          updatePitchCount();
         }}
       >
         PITCH
@@ -92,20 +117,25 @@ const PitchButtonLayout = styled.div`
 `;
 const PitchResult = styled.div`
   position: absolute;
-  width: 400px;
-  top: 30%;
-  left: 50%;
+  top: 10%;
+  right: 4%;
   text-align: center;
-  font-size: 3rem;
+  font-size: 5rem;
   font-weight: bold;
-  color: white;
+  color: #24f7d3;
+  @media (max-width: 1200px) {
+    font-size: 3rem;
+  }
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const PitchButton = styled.div`
   position: absolute;
   top: 50%;
-  left: 43%;
-  width: 13rem;
+  left: 45%;
+  width: 10%;
   padding: 10px;
   border: 1px solid white;
   border-radius: 30px;
@@ -121,23 +151,14 @@ const PitchButton = styled.div`
   }
 
   @media (max-width: 1200px) {
-    width: 12rem;
     left: 41%;
-    font-size: 2rem;
+    font-size: 3rem;
   }
   @media (max-width: 768px) {
-    width: 8rem;
+    width: 7%;
     left: 40%;
     font-size: 1rem;
   }
 `;
 
-const Ball = styled.img.attrs({
-  src: `${"http://www.bellsnwhistles.com/6spia/1asp169.gif"}`,
-})`
-  position: absolute;
-  top: 40%;
-  left: 39%;
-  width: 200px;
-`;
 export default PlayPitch;
