@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useReducer, useContext } from "react";
 import styled from "styled-components";
-
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import PlayInning from "./PlayInning.jsx";
 import PlayPitch from "./PlayPitch.jsx";
 import PlaySBOInfo from "./PlaySBOInfo.jsx";
 import PlayField from "./PlayField.jsx";
-
-import { useHistoryDispatch } from '../../util/store/HistoryContext.js';
 
 const initialSBOState = {
   strike: 0,
@@ -66,7 +63,6 @@ const PlaySection = props => {
   const [SBOState, SBODispatch] = useReducer(SBOReducer, initialSBOState);
   const [baseState, baseDispatch] = useReducer(baseReducer, initialBaseState);
   const [points, setPoints] = useState(0);
-  const historyDispatch = useHistoryDispatch();
 
   return (
     <PlaySectionLayout className={props.className}>
@@ -80,7 +76,6 @@ const PlaySection = props => {
           baseDispatch,
           points,
           setPoints,
-          historyDispatch
         }}
       />
       <PlayInning></PlayInning>

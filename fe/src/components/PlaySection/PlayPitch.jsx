@@ -13,18 +13,11 @@ const PlayPitch = ({
   baseDispatch,
   points,
   setPoints,
-  historyDispatch
 }) => {
   //useCallback 지우고.. 컴포넌트 밖으로 함수 빼자..너무 더러움
   const judge = useCallback(
-    (SBOState, SBODispatch, baseState, baseDispatch, pitchResult, historyDispatch) => {
+    (SBOState, SBODispatch, baseState, baseDispatch, pitchResult) => {
       const { strike, ball, out } = SBOState;
-      
-      historyDispatch({
-        type: `game/${pitchResult}`.toLowerCase(), 
-        payload: {strike: strike, ball: ball}
-      });
-
       if (strike === 2 && pitchResult === "STRIKE") {
         SBODispatch({ type: "OUT" });
         SBODispatch({ type: "SB_RESET" });
@@ -44,7 +37,6 @@ const PlayPitch = ({
         //공수 교대 일어나는 곳
         SBODispatch({ type: "TOTAL_RESET" }); //3 Out -> 공수 교대, 상태 리셋
         baseDispatch({ type: "RESET" }); //화면 주자 리셋
-        historyDispatch({ type: `game/init` });
         //공수 교대 api 요청
       }
     }
@@ -61,7 +53,7 @@ const PlayPitch = ({
     console.log(pitchResult);
     SBODispatch({ type: pitchResult });
     //빰빰이 보내준 context 에 pitch result 넣어주기
-    judge(SBOState, SBODispatch, baseState, baseDispatch, pitchResult, historyDispatch); //여기 부분 그냥 props 받아서 내려주고 judge에서 받을 때 분해하기
+    judge(SBOState, SBODispatch, baseState, baseDispatch, pitchResult); //여기 부분 그냥 props 받아서 내려주고 judge에서 받을 때 분해하기
   });
 
   const updatePoints = baseState => {
