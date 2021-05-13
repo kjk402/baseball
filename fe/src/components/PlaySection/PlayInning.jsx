@@ -1,9 +1,8 @@
 import styled from "styled-components";
-
 const PlayInning = ({ currentInning }) => {
   return <Inning>2회초 수비</Inning>;
 };
-//2랑 초 수비 / 말 공격 state로 받기
+//서버에서 받아온 몇회 초, 수비 보여줘야함
 
 const Inning = styled.div`
   position: absolute;

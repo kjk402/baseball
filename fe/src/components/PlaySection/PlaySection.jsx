@@ -6,7 +6,7 @@ import PlayPitch from "./PlayPitch.jsx";
 import PlaySBOInfo from "./PlaySBOInfo.jsx";
 import PlayField from "./PlayField.jsx";
 
-import { useHistoryDispatch } from '../../util/store/HistoryContext.js';
+import { useHistoryDispatch } from "../../util/store/HistoryContext.js";
 
 const initialSBOState = {
   strike: 0,
@@ -80,7 +80,7 @@ const PlaySection = props => {
           baseDispatch,
           points,
           setPoints,
-          historyDispatch
+          historyDispatch,
         }}
       />
       <PlayInning></PlayInning>
