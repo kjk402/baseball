@@ -23,9 +23,10 @@ const PlayPitch = ({
   historyDispatch,
   inningPoint,
   setInningPoint,
+  setIsDefense,
 }) => {
   const [currentPitch, setCurrentPitch] = useState("");
-  const { thirdBase } = baseState;
+  const { secondBase, thirdBase } = baseState;
   useEffect(() => {
     resetPitchCnt();
   }, []);
@@ -45,32 +46,37 @@ const PlayPitch = ({
     if (strike === 2 && pitchResult === "STRIKE") {
       SBODispatch({ type: "OUT" });
       SBODispatch({ type: "SB_RESET" });
+      if (!secondBase)
+        requestPOSTInning(3, getInning(), inningPoint, "두산 베어스"); //🔥3 부분에 게임 아이디 넣어주기
     }
+
     if (ball === 3 && pitchResult === "BALL") {
-      SBODispatch({ type: "SB_RESET" }); //4 ball -> 주자이동
-      baseDispatch({ type: "MOVE" });
+      SBODispatch({ type: "SB_RESET" });
       updatePoints(baseState);
+      if (!secondBase)
+        requestPOSTInning(3, getInning(), inningPoint, "두산 베어스"); //🔥3 부분에 게임 아이디 넣어주기
       if (thirdBase) setInningPoint(x => x + 1);
     }
 
     if (pitchResult === "HIT") {
-      baseDispatch({ type: "MOVE" }); //안타 -> 주자이동
+      baseDispatch({ type: "MOVE" });
       updatePoints(baseState);
+      if (!secondBase)
+        requestPOSTInning(3, getInning(), inningPoint, "두산 베어스"); //🔥3 부분에 게임 아이디 넣어주기
       if (thirdBase) setInningPoint(x => x + 1);
     }
 
     if (out === 2 && pitchResult === "OUT") {
       //공수 교대 일어나는 곳
-      requestPOSTInning(3, inningPoint, "두산 베어스"); //게임아이디,팀이름  서버에서 받아온걸로, 작동 x
-      requestPATCHInningPoint(3, getInning(), inningPoint, "두산 베어스"); //게임아이디,팀이름  서버에서 받아온걸로, 작동x
-      //isDefense 토글하는 것 추가
-      SBODispatch({ type: "TOTAL_RESET" }); //3 Out -> 공수 교대, 상태 리셋
+      requestPATCHInningPoint(3, getInning(), inningPoint, "두산 베어스"); //이닝 총점.🔥3 부분에 게임 아이디 넣어주기
+      setIsDefense(x => !x); //🔥공수 교대 (공격 뱃지 보여줄 때 사용 가능)
+      console.log(inningPoint);
+      //----------리셋------------------
+      SBODispatch({ type: "TOTAL_RESET" }); //SBO 신호 리셋
       baseDispatch({ type: "RESET" }); //화면 주자 리셋
       historyDispatch({ type: `game/init` });
       resetPitchCnt();
       setInningPoint(0);
-
-      //공수 교대 api 요청 /games/{gameId}/points 이닝 생성 post 현재 게임, 현재 이닝 전체 공유
     }
   });
 
@@ -82,18 +88,12 @@ const PlayPitch = ({
 
   const updatePitchCount = () => {
     const LSPitchCnt = getPitchCnt();
-    if (!LSPitchCnt) {
-      setInitialPitchCnt();
-    } else {
-      updatePitchCnt();
-    }
+    !LSPitchCnt ? setInitialPitchCnt() : updatePitchCnt();
   };
 
-  const updateInningPoints = () => {};
-
   const updateRecord = pitchResult => {
-    if (pitchResult === "HIT") requestPATCHrecord("hit", "허경민"); //🔥현재 투수이름으로 넣어주기
-    if (pitchResult === "OUT") requestPATCHrecord("out", "허경민");
+    if (pitchResult === "HIT") requestPATCHrecord("hit", "허경민"); //🔥"허경민" 현재 투수이름으로 넣어주기
+    if (pitchResult === "OUT") requestPATCHrecord("out", "허경민"); //🔥"허경민" 현재 투수이름으로 넣어주기
   };
 
   const handlePitchResult = useCallback(() => {

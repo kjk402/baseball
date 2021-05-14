@@ -12,28 +12,9 @@ export const requestGETgamePoint = async gameId => {
   ).then(res => res.json());
   return currentGame;
 };
-export const requestPATCHInningPoint = async (
-  gameId,
-  inning,
-  point,
-  teamName
-) => {
-  let response = await fetch(`${API_URL}/games/${gameId}/points`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      "API-Key": "secret",
-    },
-    body: JSON.stringify({
-      inning: inning,
-      point: point,
-      teamName: teamName,
-    }),
-  });
-  console.log(response);
-};
+
 //이닝 생성
-export const requestPOSTInning = async (gameId, point, teamName) => {
+export const requestPOSTInning = async (gameId, inning, point, teamName) => {
   let response = await fetch(`${API_URL}/games/${gameId}/points`, {
     method: "POST",
     headers: {
@@ -41,7 +22,7 @@ export const requestPOSTInning = async (gameId, point, teamName) => {
       "API-Key": "secret",
     },
     body: JSON.stringify({
-      inning: 1,
+      inning: inning, //
       point: point,
       teamName: teamName,
     }),
@@ -66,4 +47,25 @@ export const requestPATCHrecord = (type, playerName) => {
       console.log("request succeeded with JSON response", text);
     })
     .catch(function (error) {});
+};
+//이닝 점수 추가
+export const requestPATCHInningPoint = async (
+  gameId,
+  inning,
+  point,
+  teamName
+) => {
+  let response = await fetch(`${API_URL}/games/${gameId}/points`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      "API-Key": "secret",
+    },
+    body: JSON.stringify({
+      inning: inning,
+      point: point,
+      teamName: teamName,
+    }),
+  });
+  console.log(response);
 };
