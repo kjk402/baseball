@@ -2,7 +2,6 @@ const API_URL = "http://52.78.158.138:8080";
 
 export const requestGETCurrentGame = async () => {
   const currentGame = await fetch(`${API_URL}/games`).then(res => res.json());
-
   return currentGame[0];
 };
 
@@ -22,7 +21,7 @@ export const requestPOSTInning = async (gameId, inning, point, teamName) => {
       "API-Key": "secret",
     },
     body: JSON.stringify({
-      inning: inning, //
+      inning: inning,
       point: point,
       teamName: teamName,
     }),
@@ -44,7 +43,7 @@ export const requestPATCHrecord = (type, playerName) => {
   fetch(`${API_URL}/record/${playerName}/${query}`, { method: "PATCH" })
     .then(data => data.text())
     .then(text => {
-      console.log("request succeeded with JSON response", text);
+      console.log("reponse⚡💫", text);
     })
     .catch(function (error) {});
 };

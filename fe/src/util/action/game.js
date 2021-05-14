@@ -24,6 +24,11 @@ export const resetInning = () => {
   localStorage.removeItem("INNING");
 };
 
+//currentPlayTeam
+export const getCurrentPlayTeam = () => {
+  return JSON.parse(localStorage.getItem("currentPlayTeam"));
+};
+
 //Pitch Cnt
 
 export const getPitchCnt = () => {
