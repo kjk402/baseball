@@ -1,11 +1,13 @@
+import { Route } from 'react-router-dom';
+
 import HomePage from "./pages/HomePage.jsx";
 import MainPage from "./pages/MainPage.jsx";
 
 const App = () => {
   return (
     <>
-      {/* <HomePage /> */}
-      <MainPage />
+      <Route path="/" exact component={HomePage} />
+      <Route path="/main" component={MainPage} />
     </>
   );
 }

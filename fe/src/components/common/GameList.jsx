@@ -57,6 +57,9 @@ const GameList = () => {
       localStorage.setItem("currentPlayTeam", JSON.stringify(gamesAwayResult.result));
     }
     
+    // 임시
+    window.location.href="/main";
+    
   }
   return (
     <GameListLayout>
