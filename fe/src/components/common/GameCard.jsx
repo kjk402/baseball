@@ -63,13 +63,15 @@ const TeamName = styled.span`
   &:hover {
     ${ ({teamInfo}) => {
       if (teamInfo) {
-        return css`&::before {
+        return css`&::after {
           content: "이미 선택된 팀입니다.";
           color: red;
           font-size: 2rem;
+          
           position: absolute;
-          margin-top: -25px;
-          margin-left: -20px;
+          margin-top: 25px;
+          /* padding:10px; */
+          /* margin-left: -20px; */
         }`;
       } else {
         return css`color: "red"`
