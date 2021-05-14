@@ -2,6 +2,7 @@ package com.codesquad.baseball.team14.controller;
 
 
 import com.codesquad.baseball.team14.domain.Team;
+import com.codesquad.baseball.team14.domain.game.Game;
 import com.codesquad.baseball.team14.domain.game.ScoreBoard;
 import com.codesquad.baseball.team14.dto.*;
 import com.codesquad.baseball.team14.service.GameService;
@@ -26,6 +27,13 @@ public class GameController {
     public GameController(TeamService teamService, GameService gameService) {
         this.teamService = teamService;
         this.gameService = gameService;
+    }
+
+    @GetMapping
+    @ApiOperation(value = "진행 중인 게임", notes = "진행 중인 게임들을 반환합니다.")
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<GameDto> findAllGameList() {
+        return gameService.findAllGameList();
     }
 
     @PostMapping("/home")
@@ -94,6 +102,13 @@ public class GameController {
     public CurrentPlayerDto getCurrentPlayer(@ApiParam("팀 식별자") @PathVariable String teamName) {
         CurrentPlayerDto currentPlayerDto = gameService.getCurrent(teamName);
         return currentPlayerDto;
+    }
+
+    @DeleteMapping("/{gameId}")
+    @ApiOperation(value = "게임 삭제", notes = "게임 데이터 삭제합니다.")
+    public String deleteGame(@ApiParam("게임 식별자") @PathVariable Long gameId) {
+        gameService.deleteGame(gameId);
+        return gameId + "번 게임을 삭제했습니다.";
     }
 
 }

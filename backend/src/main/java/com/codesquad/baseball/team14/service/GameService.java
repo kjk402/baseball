@@ -5,9 +5,11 @@ import com.codesquad.baseball.team14.dao.GameDAO;
 import com.codesquad.baseball.team14.dao.InningsDAO;
 import com.codesquad.baseball.team14.dao.ScoreBoardDAO;
 import com.codesquad.baseball.team14.domain.UserType;
+import com.codesquad.baseball.team14.domain.game.Game;
 import com.codesquad.baseball.team14.domain.game.Innings;
 import com.codesquad.baseball.team14.domain.game.ScoreBoard;
 import com.codesquad.baseball.team14.dto.CurrentPlayerDto;
+import com.codesquad.baseball.team14.dto.GameDto;
 import com.codesquad.baseball.team14.dto.PointDto;
 import com.codesquad.baseball.team14.dto.ScoreDto;
 import org.springframework.stereotype.Service;
@@ -81,6 +83,10 @@ public class GameService {
     public void updateInning(PointDto pointDto) {
         Long scoreBoardId = scoreBoardDAO.findScoreBoardId(pointDto.getTeamName());
         inningsDAO.updateInning(scoreBoardId, pointDto.getInning(), pointDto.getPoint());
+    }
+
+    public List<GameDto> findAllGameList() {
+        return gameDAO.findAll();
     }
 
 }

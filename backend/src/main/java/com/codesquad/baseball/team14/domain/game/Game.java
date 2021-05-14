@@ -20,6 +20,13 @@ public class Game {
 
     private UserType userType;
 
+    public Game(Long id, Team home, Team away, UserType userType) {
+        this.id = id;
+        this.home = home;
+        this.away = away;
+        this.userType = userType;
+    }
+
     public Game(Team away, Team home, UserType userType) {
         this.away = away;
         this.home = home;

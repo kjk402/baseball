@@ -1,6 +1,7 @@
 package com.codesquad.baseball.team14.dao;
 
-import com.codesquad.baseball.team14.domain.game.Innings;
+
+import com.codesquad.baseball.team14.dto.CurrentPlayerRecord;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,16 +13,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class InningsDAO {
+public class RecordDAO {
+
     private JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public InningsDAO(DataSource dataSource) {
+    public RecordDAO(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
-    public List<Innings> findAllById(long id) {
+    public CurrentPlayerRecord findByPlayerName(String playerName) {
+        String sql = "SELECT r.at_bat, r.hits from record r where r.player_name= '" + playerName + "'";
+        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
+                .addValue("playerName", playerName);
+        List<CurrentPlayerRecord> currentPlayerRecords = new ArrayList<>();
+        jdbcTemplate.query(sql, (rs, rowNum) -> {
+            currentPlayerRecords.add(new CurrentPlayerRecord(
+                    rs.getInt("at_bat"),
+                    rs.getInt("hits")
+            ));
+            return null;
+        });
+        return currentPlayerRecords.get(0);
+    }
+
+
+}
+/*
+namedParameterJdbcTemplate.update(sql, sqlParameterSource)
+ */
+/*
+public List<Innings> findAllById(long id) {
         String sql = "select i.id, i.score, i.score_board from innings i where i.score_board =" + id + " order by score_board_key";
 
         List<Innings> innings = new ArrayList<>();
@@ -36,8 +59,10 @@ public class InningsDAO {
         });
         return innings;
     }
+ */
 
-    public void createInnings(Innings innings) {
+/*
+  public void createInnings(Innings innings) {
         String sql = "INSERT INTO innings (score_board, score, score_board_key)" +
                 "VALUES (:score_board, :score, :inning)";
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
@@ -47,28 +72,4 @@ public class InningsDAO {
         namedParameterJdbcTemplate.update(sql, sqlParameterSource);
     }
 
-    public void updateInning(Long scoreBoardId, int inning, int point) {
-        String sql = "UPDATE innings SET score = score + :point WHERE score_board = :score_board_id AND score_board_key = :inning";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("point", point)
-                .addValue("score_board_id", scoreBoardId)
-                .addValue("inning", inning);
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
-    }
-
-    public void deleteInnings(Long gameId) {
-        Long id1 = gameId*2 -1;
-        Long id2 = gameId*2;
-        String sql = "DELETE i FROM innings i where i.score_board =:id1 OR i.score_board=:id2";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id1", id1)
-                .addValue("id2", id2);
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
-    }
-
-}
-/*
-        String sql = "DELETE g, s FROM game AS g INNER JOIN score_board AS s ON g.id = s.game where g.id = " + gameId;
-
  */
-
