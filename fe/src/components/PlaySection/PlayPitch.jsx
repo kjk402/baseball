@@ -13,8 +13,8 @@ import {
   getInning,
 } from "../../util/action/game.js";
 
-//이닝 바꾸기, 공수 교체
-
+import API from "../../util/API.js";
+//이닝 바꾸기
 const PlayPitch = ({
   SBOState,
   SBODispatch,
@@ -24,6 +24,9 @@ const PlayPitch = ({
   inningPoint,
   setInningPoint,
   setIsDefense,
+  gameId,
+  currentPlayTeam,
+  updateCurrentPlayTeam,
 }) => {
   const [currentPitch, setCurrentPitch] = useState("");
   const { secondBase, thirdBase } = baseState;
@@ -47,14 +50,14 @@ const PlayPitch = ({
       SBODispatch({ type: "OUT" });
       SBODispatch({ type: "SB_RESET" });
       if (!secondBase)
-        requestPOSTInning(3, getInning(), inningPoint, "두산 베어스"); //🔥3 부분에 게임 아이디 넣어주기
+        requestPOSTInning(gameId, getInning(), inningPoint, currentPlayTeam);
     }
 
     if (ball === 3 && pitchResult === "BALL") {
       SBODispatch({ type: "SB_RESET" });
       updatePoints(baseState);
       if (!secondBase)
-        requestPOSTInning(3, getInning(), inningPoint, "두산 베어스"); //🔥3 부분에 게임 아이디 넣어주기
+        requestPOSTInning(gameId, getInning(), inningPoint, currentPlayTeam);
       if (thirdBase) setInningPoint(x => x + 1);
     }
 
@@ -62,16 +65,21 @@ const PlayPitch = ({
       baseDispatch({ type: "MOVE" });
       updatePoints(baseState);
       if (!secondBase)
-        requestPOSTInning(3, getInning(), inningPoint, "두산 베어스"); //🔥3 부분에 게임 아이디 넣어주기
+        requestPOSTInning(gameId, getInning(), inningPoint, currentPlayTeam);
       if (thirdBase) setInningPoint(x => x + 1);
     }
 
     if (out === 2 && pitchResult === "OUT") {
       //공수 교대 일어나는 곳
-      requestPATCHInningPoint(3, getInning(), inningPoint, "두산 베어스"); //이닝 총점.🔥3 부분에 게임 아이디 넣어주기
+      requestPATCHInningPoint(
+        gameId,
+        getInning(),
+        inningPoint,
+        currentPlayTeam
+      );
       setIsDefense(x => !x); //🔥공수 교대 (공격 뱃지 보여줄 때 사용 가능)
-      console.log(inningPoint);
-      //----------리셋------------------
+
+      //---------여기서부터 리셋 구간 입니다------------------
       SBODispatch({ type: "TOTAL_RESET" }); //SBO 신호 리셋
       baseDispatch({ type: "RESET" }); //화면 주자 리셋
       historyDispatch({ type: `game/init` });
@@ -91,9 +99,11 @@ const PlayPitch = ({
     !LSPitchCnt ? setInitialPitchCnt() : updatePitchCnt();
   };
 
-  const updateRecord = pitchResult => {
-    if (pitchResult === "HIT") requestPATCHrecord("hit", "허경민"); //🔥"허경민" 현재 투수이름으로 넣어주기
-    if (pitchResult === "OUT") requestPATCHrecord("out", "허경민"); //🔥"허경민" 현재 투수이름으로 넣어주기
+  const updateRecord = async pitchResult => {
+    const currentHitter = await API.get.gameCurrentPlayer(currentPlayTeam);
+    console.log(currentHitter);
+    if (pitchResult === "HIT") requestPATCHrecord("hit", currentHitter);
+    if (pitchResult === "OUT") requestPATCHrecord("out", currentHitter);
   };
 
   const handlePitchResult = useCallback(() => {
@@ -117,6 +127,7 @@ const PlayPitch = ({
         onClick={() => {
           handlePitchResult();
           updatePitchCount();
+          updateCurrentPlayTeam();
         }}
       >
         PITCH

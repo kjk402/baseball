@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
 import styled from "styled-components";
-import { setInitialInning, setInitialTurn } from "../../util/action/game.js";
+import {
+  setInitialInning,
+  setInitialTurn,
+  getCurrentPlayTeam,
+} from "../../util/action/game.js";
 import PlayInning from "./PlayInning.jsx";
 import PlayPitch from "./PlayPitch.jsx";
 import PlaySBOInfo from "./PlaySBOInfo.jsx";
@@ -66,12 +70,18 @@ const PlaySection = ({ isDefense, setIsDefense, ...props }) => {
   const [SBOState, SBODispatch] = useReducer(SBOReducer, initialSBOState);
   const [baseState, baseDispatch] = useReducer(baseReducer, initialBaseState);
   const [inningPoint, setInningPoint] = useState(0);
+  const [currentPlayTeam, setCurrentPlayTeam] = useState("");
+  const { gameId, away: awayTeam, home: homeTeam } = getCurrentPlayTeam();
+
+  const updateCurrentPlayTeam = () => {
+    isDefense ? setCurrentPlayTeam(awayTeam) : setCurrentPlayTeam(homeTeam);
+  };
   const historyDispatch = useHistoryDispatch();
 
-  console.log(inningPoint);
   useEffect(() => {
     setInitialInning();
     setInitialTurn(isDefense);
+    updateCurrentPlayTeam();
   }, []);
 
   return (
@@ -88,6 +98,9 @@ const PlaySection = ({ isDefense, setIsDefense, ...props }) => {
           inningPoint,
           setInningPoint,
           setIsDefense,
+          gameId,
+          currentPlayTeam,
+          updateCurrentPlayTeam,
         }}
       />
       <PlayInning {...{ isDefense }}></PlayInning>
