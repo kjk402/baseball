@@ -1,7 +1,8 @@
-import styled from "styled-components";
-const GameCard = ({ game, idx }) => {
-  const [home, away] = game;
+import styled, { css } from "styled-components";
 
+const GameCard = ({ game, idx, onClick: handleTeamClick }) => {
+  const [home, away] = game;
+  
   return (
     <GameCardLayout>
       <GameCardRow>
@@ -9,9 +10,13 @@ const GameCard = ({ game, idx }) => {
       </GameCardRow>
 
       <GameCardRow>
-        <TeamName>{home}</TeamName>
+        <TeamName teamInfo={home.info} onClick={ () => { handleTeamClick({away: home.teamName, home: away.teamName }) } }>
+          {home.teamName}
+        </TeamName>
         <Versus>vs</Versus>
-        <TeamName>{away}</TeamName>
+        <TeamName teamInfo={away.info} onClick={ () => { handleTeamClick({away: away.teamName, home: home.teamName }) } }>
+          {away.teamName}
+        </TeamName>
       </GameCardRow>
     </GameCardLayout>
   );
@@ -54,9 +59,24 @@ const TeamName = styled.span`
   width: 100%;
   font-size: 3rem;
   padding: 20px 0px;
+  color: ${({teamInfo}) => teamInfo ? "grey": "black" };
   &:hover {
-    color: red;
+    ${ ({teamInfo}) => {
+      if (teamInfo) {
+        return css`&::before {
+          content: "이미 선택된 팀입니다.";
+          color: red;
+          font-size: 2rem;
+          position: absolute;
+          margin-top: -25px;
+          margin-left: -20px;
+        }`;
+      } else {
+        return css`color: "red"`
+      }
+    }};
   }
+  
 `;
 
 export default GameCard;

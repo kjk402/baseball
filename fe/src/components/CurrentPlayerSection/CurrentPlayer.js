@@ -1,20 +1,70 @@
+import {useEffect, useState} from 'react';
 import styled from 'styled-components';
 
+import API from '../../util/API.js';
+
+// {
+//   "teamName": "SSG 랜더스",
+//   "opponentPitcher": "유희관",
+//   "currentHitter": "최정",
+//   "currentPlayerRecord": {
+//     "atBat": 2,
+//     "hits": 0
+//   }
+// }
+
+// {
+//   "teamName": "두산 베어스",
+//   "opponentPitcher": "김광현",
+//   "currentHitter": "오재원",
+//   "currentPlayerRecord": {
+//     "atBat": 2,
+//     "hits": 1
+//   }
+// }
+
 const CurrentPlayer = (props) => {
+  const [currentPlayerInfo, setCurrentPlayerInfo] = useState({});
+  
+  useEffect(() => {
+    const isAwayTurn = localStorage.getItem("TURN");
+    const currentPlayTeam = JSON.parse(localStorage.getItem("currentPlayTeam"));
+  
+    const fetchCurrentPlayer = async () => {
+      
+      const away = currentPlayTeam.away;
+      const home = currentPlayTeam.home;
+      let response;
+      if (isAwayTurn) {
+        response = await API.get.gameCurrentPlayer(away);  
+      } else {
+        response = await API.get.gameCurrentPlayer(home);
+      }
+      setCurrentPlayerInfo(response);
+    }
+    fetchCurrentPlayer();
+    console.log(currentPlayerInfo)
+  }, []);
+
+  if (Object.keys(currentPlayerInfo).length === 0) return <></>;
+
   return (
+    
     <CurrentPlayerLayout className={props.className}>
       <CurrentPlayerRow>
         <CurrentPlayerPosition> 투수 </CurrentPlayerPosition>
         <CurrentPlayerStatus>
-          <CurrentPlayerName>최동원</CurrentPlayerName>
-          <CurrentPlayerDetails>#39</CurrentPlayerDetails>
+          <CurrentPlayerName>{currentPlayerInfo.opponentPitcher}</CurrentPlayerName>
+          {/* <CurrentPlayerDetails>#39</CurrentPlayerDetails> */}
         </CurrentPlayerStatus>
       </CurrentPlayerRow>
       <CurrentPlayerRow>
         <CurrentPlayerPosition> 타자 </CurrentPlayerPosition>
         <CurrentPlayerStatus>
-          <CurrentPlayerName>류현진</CurrentPlayerName>
-          <CurrentPlayerDetails>1타석 0안타</CurrentPlayerDetails>
+          <CurrentPlayerName>{currentPlayerInfo.currentHitter}</CurrentPlayerName>
+          <CurrentPlayerDetails>
+            {`${currentPlayerInfo.currentPlayerRecord.atBat}타석 ${currentPlayerInfo.currentPlayerRecord.hits}안타`}
+          </CurrentPlayerDetails>
         </CurrentPlayerStatus>
       </CurrentPlayerRow>
     </CurrentPlayerLayout>
