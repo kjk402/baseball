@@ -74,14 +74,6 @@ const PlaySection = ({ isDefense, setIsDefense, ...props }) => {
     setInitialTurn(isDefense);
   }, []);
 
-  // useEffect(() => {
-  //   fetch("http://52.78.158.138:8080/games")
-  //     .then(res => res.json())
-  //     .then(json => console.log(json))
-  //     .catch(console.log("error"));
-  // }, []);
-  //useEffect 이닝 시작 서버한테 알리기 setInning 하기
-
   return (
     <PlaySectionLayout className={props.className}>
       <PlaySBOInfo SBOState={SBOState} />
