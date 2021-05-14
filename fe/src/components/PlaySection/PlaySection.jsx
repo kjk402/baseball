@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useReducer, useContext } from "react";
 import styled from "styled-components";
-
+import { setInitialInning, setInitialTurn } from "../../util/action/game.js";
 import PlayInning from "./PlayInning.jsx";
 import PlayPitch from "./PlayPitch.jsx";
 import PlaySBOInfo from "./PlaySBOInfo.jsx";
@@ -61,26 +61,40 @@ const baseReducer = (state, action) => {
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
-
+//메인이 되는 함수를 맨위에?
 const PlaySection = props => {
   const [SBOState, SBODispatch] = useReducer(SBOReducer, initialSBOState);
   const [baseState, baseDispatch] = useReducer(baseReducer, initialBaseState);
-  const [points, setPoints] = useState(0);
+  const [inningPoint, setInningPoint] = useState(0);
   const historyDispatch = useHistoryDispatch();
+
+  console.log(inningPoint);
+  useEffect(() => {
+    setInitialInning();
+    setInitialTurn(props.isDefense);
+  }, []);
+
+  // useEffect(() => {
+  //   fetch("http://52.78.158.138:8080/games")
+  //     .then(res => res.json())
+  //     .then(json => console.log(json))
+  //     .catch(console.log("error"));
+  // }, []);
+  //useEffect 이닝 시작 서버한테 알리기 setInning 하기
 
   return (
     <PlaySectionLayout className={props.className}>
       <PlaySBOInfo SBOState={SBOState} />
-      <PlayField {...{ baseState }} />
+      <PlayField {...{ baseState, setInningPoint }} />
       <PlayPitch
         {...{
           SBOState,
           SBODispatch,
           baseState,
           baseDispatch,
-          points,
-          setPoints,
           historyDispatch,
+          inningPoint,
+          setInningPoint,
         }}
       />
       <PlayInning></PlayInning>
