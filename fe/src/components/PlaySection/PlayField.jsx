@@ -1,9 +1,15 @@
 import styled from "styled-components";
 import PlayFieldCanvas from "./PlayFieldCanvas.jsx";
-
+const IMAGE = {
+  RUNNING:
+    "https://media.tenor.com/images/6d02cd24ab50932ca62ce555d74e384c/tenor.gif",
+  STANDING:
+    "https://i.pinimg.com/originals/f7/5f/f2/f75ff23cd22d200f24bfd21f3a8b1f86.gif",
+};
 //hit 상태에 따라서 running 렌더를 해주자
 //달리는건 2초뒤에 사라지게
-
+//이미지 바꿔치기로 리팩토링
+//종료 시점에 서있게 하고 -> 이미지 바꾸기 = 애니메이션이 종료될때 이벤트 실행 -> 상태를 바꿈(이미지 주소를 바꿈->리렌더링)
 const renderPlayer = baseState => {
   const { firstBase, secondBase, thirdBase, homeBase } = baseState;
   //서있는 선수
@@ -61,7 +67,7 @@ const PlayField = ({ baseState }) => {
 };
 
 const StandingPlayer = styled.img.attrs({
-  src: `${"https://i.pinimg.com/originals/f7/5f/f2/f75ff23cd22d200f24bfd21f3a8b1f86.gif"}`,
+  src: `${IMAGE.STANDING}`,
 })`
   animation-delay: 3s;
   width: 6rem;
@@ -74,7 +80,7 @@ const StandingPlayer = styled.img.attrs({
 `;
 
 const RunningPlayer = styled.img.attrs({
-  src: `${"https://media.tenor.com/images/6d02cd24ab50932ca62ce555d74e384c/tenor.gif"}`,
+  src: `${IMAGE.RUNNING}`,
 })`
   opacity: 0%;
   animation-iteration-count: 1;

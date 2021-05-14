@@ -62,7 +62,7 @@ const baseReducer = (state, action) => {
   }
 };
 //메인이 되는 함수를 맨위에?
-const PlaySection = props => {
+const PlaySection = ({ isDefense, setIsDefense, ...props }) => {
   const [SBOState, SBODispatch] = useReducer(SBOReducer, initialSBOState);
   const [baseState, baseDispatch] = useReducer(baseReducer, initialBaseState);
   const [inningPoint, setInningPoint] = useState(0);
@@ -71,16 +71,8 @@ const PlaySection = props => {
   console.log(inningPoint);
   useEffect(() => {
     setInitialInning();
-    setInitialTurn(props.isDefense);
+    setInitialTurn(isDefense);
   }, []);
-
-  // useEffect(() => {
-  //   fetch("http://52.78.158.138:8080/games")
-  //     .then(res => res.json())
-  //     .then(json => console.log(json))
-  //     .catch(console.log("error"));
-  // }, []);
-  //useEffect 이닝 시작 서버한테 알리기 setInning 하기
 
   return (
     <PlaySectionLayout className={props.className}>
@@ -95,9 +87,10 @@ const PlaySection = props => {
           historyDispatch,
           inningPoint,
           setInningPoint,
+          setIsDefense,
         }}
       />
-      <PlayInning></PlayInning>
+      <PlayInning {...{ isDefense }}></PlayInning>
       <PlayBackgroundLayer>
         <PlayBlackLayer />
       </PlayBackgroundLayer>

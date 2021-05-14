@@ -1,8 +1,16 @@
 import styled from "styled-components";
-const PlayInning = ({ currentInning }) => {
-  return <Inning>2회초 수비</Inning>;
+import { getInning } from "../../util/action/game.js";
+const PlayInning = ({ isDefense }) => {
+  const renderOffenseDefense = () => {
+    return isDefense ? "초 수비" : "말 공격"; //홈팀 선택 고정이라 초 수비로 고정함
+  };
+
+  return (
+    <Inning>
+      {getInning()}회 {renderOffenseDefense()}
+    </Inning>
+  );
 };
-//서버에서 받아온 몇회 초, 수비 보여줘야함
 
 const Inning = styled.div`
   position: absolute;
