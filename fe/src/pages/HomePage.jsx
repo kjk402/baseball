@@ -2,11 +2,10 @@ import styled from "styled-components";
 
 import Responsive from "../components/common/Responsive.jsx";
 import GameMessage from "../components/common/GameMessage.jsx";
-
 import GameList from "../components/common/GameList.jsx";
 
 const HomePage = () => {
-  // const handleGameMessage
+  
   return (
     <>
       <HomePageLayout>
