@@ -11,7 +11,7 @@ const ScoreBoard = props => {
         <ScoreBoardMatch>
           <ScoreBoardTeam>AAA</ScoreBoardTeam>
           <ScoreBoardPoint>1</ScoreBoardPoint>
-          <ScoreBaordVersus />
+          <ScoreBoardVersus />
           <ScoreBoardPoint>2</ScoreBoardPoint>
           <ScoreBoardTeam>BBB</ScoreBoardTeam>
         </ScoreBoardMatch>
@@ -65,7 +65,7 @@ const ScoreBoardPoint = styled.span`
   font-size: 8rem;
   color: white;
 `;
-const ScoreBaordVersus = styled.span`
+const ScoreBoardVersus = styled.span`
   font-size: 4rem;
   color: grey;
   ::after {
