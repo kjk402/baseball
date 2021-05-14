@@ -62,7 +62,7 @@ const baseReducer = (state, action) => {
   }
 };
 //메인이 되는 함수를 맨위에?
-const PlaySection = props => {
+const PlaySection = ({ isDefense, setIsDefense, ...props }) => {
   const [SBOState, SBODispatch] = useReducer(SBOReducer, initialSBOState);
   const [baseState, baseDispatch] = useReducer(baseReducer, initialBaseState);
   const [inningPoint, setInningPoint] = useState(0);
@@ -71,7 +71,7 @@ const PlaySection = props => {
   console.log(inningPoint);
   useEffect(() => {
     setInitialInning();
-    setInitialTurn(props.isDefense);
+    setInitialTurn(isDefense);
   }, []);
 
   // useEffect(() => {
@@ -95,9 +95,10 @@ const PlaySection = props => {
           historyDispatch,
           inningPoint,
           setInningPoint,
+          setIsDefense,
         }}
       />
-      <PlayInning></PlayInning>
+      <PlayInning {...{ isDefense }}></PlayInning>
       <PlayBackgroundLayer>
         <PlayBlackLayer />
       </PlayBackgroundLayer>
