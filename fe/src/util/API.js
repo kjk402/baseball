@@ -36,7 +36,8 @@ const API = {
         // if (response.status >= 400) throw new Error({teamName: parse[0].split("=")[0], msg: response.text()} );
         if (response.status >= 400) {
           const games = await API.get.games();
-          return {type: "EXIST", result: games.find((game) => game.away === selectedTeam) }
+          
+          return {type: "EXIST", result: games.find((game) => game.away === selectedTeam || game.home === selectedTeam) }
           // return {type: "EXIST", result: await API.get.gamesCurrentPlayer(parse[0].split("=")[1]) }
         } else {
           const responseBody = await response.json();

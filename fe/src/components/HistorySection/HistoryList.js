@@ -13,8 +13,9 @@ const HistoryList = (props) => {
     historyDispatch({ type: `game/init` });
     console.log("is INIT?")
   }, [])
+  
   useEffect(() => {
-    console.log(historyState)
+    console.log("히스토리 추가", historyState);
   })
   
   return (
