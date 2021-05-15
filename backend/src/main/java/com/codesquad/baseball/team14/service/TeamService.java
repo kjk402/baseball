@@ -1,5 +1,6 @@
 package com.codesquad.baseball.team14.service;
 
+import com.codesquad.baseball.team14.dao.PlayerDAO;
 import com.codesquad.baseball.team14.domain.*;
 import com.codesquad.baseball.team14.dto.TeamDto;
 import org.springframework.stereotype.Service;
@@ -13,11 +14,13 @@ public class TeamService {
     private final TeamRepository teamRepository;
     private final PlayerRepository playerRepository;
     private final RecordService recordService;
+    private final PlayerDAO playerDAO;
 
-    public TeamService(TeamRepository teamRepository, PlayerRepository playerRepository, RecordService recordService) {
+    public TeamService(TeamRepository teamRepository, PlayerRepository playerRepository, RecordService recordService, PlayerDAO playerDAO) {
         this.teamRepository = teamRepository;
         this.playerRepository = playerRepository;
         this.recordService = recordService;
+        this.playerDAO = playerDAO;
     }
 
     public Team findTeam(String teamName) {

@@ -66,8 +66,6 @@ public class GameDAO {
         return query.get(0);
     }
 
-
-
     public void deleteGame(Long gameId) {
         inningsDAO.deleteInnings(gameId);
         String sql = "DELETE g, s FROM game AS g INNER JOIN score_board AS s ON g.id = s.game where g.id = " + gameId;
@@ -91,18 +89,4 @@ public class GameDAO {
     }
 
 }
-
-/*
-List<Innings> innings = new ArrayList<>();
-
-        jdbcTemplate.query(sql, (rs, rowNum) -> {
-            innings.add(new Innings(
-                    rs.getLong("id"),
-                    rs.getLong("score_board"),
-                    rs.getInt("score")
-            ));
-            return null;
-        });
-        return innings;
- */
 
