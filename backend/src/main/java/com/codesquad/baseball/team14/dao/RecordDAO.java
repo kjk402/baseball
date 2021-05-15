@@ -38,38 +38,4 @@ public class RecordDAO {
         return currentPlayerRecords.get(0);
     }
 
-
 }
-/*
-namedParameterJdbcTemplate.update(sql, sqlParameterSource)
- */
-/*
-public List<Innings> findAllById(long id) {
-        String sql = "select i.id, i.score, i.score_board from innings i where i.score_board =" + id + " order by score_board_key";
-
-        List<Innings> innings = new ArrayList<>();
-
-        jdbcTemplate.query(sql, (rs, rowNum) -> {
-            innings.add(new Innings(
-                    rs.getLong("id"),
-                    rs.getLong("score_board"),
-                    rs.getInt("score")
-            ));
-            return null;
-        });
-        return innings;
-    }
- */
-
-/*
-  public void createInnings(Innings innings) {
-        String sql = "INSERT INTO innings (score_board, score, score_board_key)" +
-                "VALUES (:score_board, :score, :inning)";
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("score_board", innings.getScoreBoard())
-                .addValue("score", innings.getScore())
-                .addValue("inning", innings.getInning());
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource);
-    }
-
- */

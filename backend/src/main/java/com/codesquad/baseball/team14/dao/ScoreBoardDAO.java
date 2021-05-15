@@ -22,12 +22,12 @@ public class ScoreBoardDAO {
     private PlayerDAO playerDAO;
     private RecordDAO recordDAO;
 
-    public ScoreBoardDAO(DataSource dataSource, InningsDAO inningsDAO, PlayerDAO playerDAO,RecordDAO recordDAO) {
+    public ScoreBoardDAO(DataSource dataSource, InningsDAO inningsDAO, PlayerDAO playerDAO, RecordDAO recordDAO) {
         jdbcTemplate = new JdbcTemplate(dataSource);
         namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.inningsDAO = inningsDAO;
         this.playerDAO = playerDAO;
-        this.recordDAO =recordDAO;
+        this.recordDAO = recordDAO;
     }
 
     public void createScoreBoard(ScoreBoard scoreBoard, String opponentPitcher, String currentHitter) {
@@ -72,26 +72,18 @@ public class ScoreBoardDAO {
         String playerName = findCurrentPlayer(teamName);
 
         jdbcTemplate.query(sql, ((rs, rowNum) -> {
-                    CurrentPlayerRecord currentPlayerRecord = recordDAO.findByPlayerName(playerName);
-                            currentPlayerDtos.add(new CurrentPlayerDto(
-                            rs.getString("team"),
-                            rs.getString("opponent_pitcher"),
-                            rs.getString("current_hitter"),
-                                    currentPlayerRecord)
-                    );
-                return null;
-                }));
+            CurrentPlayerRecord currentPlayerRecord = recordDAO.findByPlayerName(playerName);
+            currentPlayerDtos.add(new CurrentPlayerDto(
+                    rs.getString("team"),
+                    rs.getString("opponent_pitcher"),
+                    rs.getString("current_hitter"),
+                    currentPlayerRecord)
+            );
+            return null;
+        }));
         return currentPlayerDtos.get(0);
     }
 
-    /*
-    public Long findScoreBoardId(String teamName) {
-        Long scoreBoardId;
-        String sql = "SELECT s.id FROM score_board s WHERE s.team = '" + teamName + "'";
-        scoreBoardId = this.jdbcTemplate.queryForObject(sql, Long.class);
-        return scoreBoardId;
-    }
-     */
     public String findCurrentPlayer(String teamName) {
         String playerName;
         String sql = "SELECT s.opponent_pitcher FROM score_board s where s.team = '" + teamName + "'";

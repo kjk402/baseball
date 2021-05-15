@@ -28,4 +28,5 @@ public class CurrentPlayerDto {
     public CurrentPlayerRecord getCurrentPlayerRecord() {
         return currentPlayerRecord;
     }
+
 }
