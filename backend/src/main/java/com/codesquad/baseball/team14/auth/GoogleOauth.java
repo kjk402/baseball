@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GoogleOauth implements SocialOauth {
     private final String GOOGLE_SNS_BASE_URL = "https://accounts.google.com/o/oauth2/v2/auth";
-    private final String GOOGLE_SNS_CLIENT_ID = "70266676371-lvo33dr47a63c9ch1g8mipfpf70jfe0q.apps.googleusercontent.com";
+    private final String GOOGLE_SNS_CLIENT_ID = "";
     private final String GOOGLE_SNS_CALLBACK_URL = "http://localhost:8080/auth/google/callback";
 //    private final String GOOGLE_SNS_CALLBACK_URL = "http://ec2-52-78-158-138.ap-northeast-2.compute.amazonaws.com:8080/auth/google/callback";
-    private final String GOOGLE_SNS_CLIENT_SECRET = "namBp7aaV8jQFaR7aylCLVO8";
+    private final String GOOGLE_SNS_CLIENT_SECRET = "";
     private final String GOOGLE_SNS_TOKEN_BASE_URL = "https://oauth2.googleapis.com/token";
 
     @Override
